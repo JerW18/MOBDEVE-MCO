@@ -1,0 +1,26 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Rectangle Background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#00FFFFFF"/> <!-- Transparent background -->
+            <corners android:radius="9.25dp"/>
+            <size android:width="44dp" android:height="45dp"/>
+            <stroke
+                android:color="#F0F0F0"
+                android:width="1.5dp"/>
+        </shape>
+    </item>
+    <!-- Vector Path -->
+    <item
+        android:gravity="center"> <!-- Center the vector drawable -->
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="24dp"
+            android:height="25dp"
+            android:viewportWidth="24"
+            android:viewportHeight="25">
+            <path
+                android:fillColor="#F0F0F0"
+                android:pathData="M18,9.5 V0.5 H6 V9.5 H0 V20 H24 V9.5 H18 Z M10.5,18.5 H1.5 V11 H4.5 V12.5 H7.5 V11 H10.5 V18.5 Z M7.5,9.5 V2 H10.5 V3.5 H13.5 V2 H16.5 V9.5 H7.5 Z M22.5,18.5 H13.5 V11 H16.5 V12.5 H19.5 V11 H22.5 V18.5 Z M0,24.5 H4.5 V23 H19.5 V24.5 H24 V21.5 H0 V24.5 Z"/>
+        </vector>
+    </item>
+</layer-list>
