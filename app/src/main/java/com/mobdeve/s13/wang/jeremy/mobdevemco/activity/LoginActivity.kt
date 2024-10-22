@@ -1,4 +1,4 @@
-package com.mobdeve.s13.wang.jeremy.mobdevemco
+package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LoginBinding
 import android.util.TypedValue
 import android.widget.ImageView
+import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 
 class LoginActivity : ComponentActivity() {
     private lateinit var binding: LoginBinding

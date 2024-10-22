@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/viewPullOutGreenHeader"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".12" />
+
+    <ImageView
+        android:id="@+id/ivPullOutBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/back_button"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPullOutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Pull Out"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPullOutBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/viewPullOutGreenHeader"
+        app:layout_constraintTop_toTopOf="@+id/ivPullOutBack" />
+
+    <ImageView
+        android:id="@+id/ivCart"
+        android:layout_width="match_parent"
+        android:layout_height="87sp"
+        android:scaleType="fitXY"
+        android:src="@drawable/cart_background"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPullOutTotalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Total: "
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivCart" />
+
+    <TextView
+        android:id="@+id/tvPullOutPeso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semibold"
+        android:text="₱ "
+        android:textColor="@color/peso_green"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPullOutTotalLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvPullOutTotalLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPullOutTotalLabel" />
+
+    <TextView
+        android:id="@+id/tvPullOutTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semibold"
+        android:text="100.00"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPullOutPeso"
+        app:layout_constraintStart_toEndOf="@+id/tvPullOutPeso"
+        app:layout_constraintTop_toTopOf="@+id/tvPullOutPeso" />
+
+    <Button
+        android:id="@+id/btnPullOut"
+        android:layout_width="140sp"
+        android:layout_height="60sp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/active_button"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Pull Out"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ivCart"
+        app:layout_constraintTop_toTopOf="@+id/ivCart" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerPullOut"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ivCart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPullOutGreenHeader" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

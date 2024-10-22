@@ -1,6 +1,5 @@
-package com.mobdeve.s13.wang.jeremy.mobdevemco
+package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +12,7 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import androidx.core.content.ContextCompat
+import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 
 class SplashActivity : ComponentActivity() {
     private lateinit var splashLogo: ImageView

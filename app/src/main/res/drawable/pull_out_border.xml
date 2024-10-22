@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="370dp"
+    android:height="122dp"
+    android:viewportWidth="370"
+    android:viewportHeight="122">
+
+    <!-- White filled rectangle with rounded corners (rx=10) -->
+    <path
+        android:fillColor="#00FFFFFF"
+        android:pathData="M10,0h353a10,10 0 0 1 10,10v102a10,10 0 0 1 -10,10h-353a10,10 0 0 1 -10,-10v-102a10,10 0 0 1 10,-10z" />
+
+    <!-- Border rectangle with black stroke, slightly inset and rounded corners (rx=9.5) -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#000000"
+        android:strokeAlpha="0.25"
+        android:strokeWidth="1"
+        android:pathData="M9.5,0.5h354a9.5,9.5 0 0 1 9.5,9.5v101a9.5,9.5 0 0 1 -9.5,9.5h-354a9.5,9.5 0 0 1 -9.5,-9.5v-101a9.5,9.5 0 0 1 9.5,-9.5z"/>
+</vector>

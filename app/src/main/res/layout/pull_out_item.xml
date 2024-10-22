@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivPullOutBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/pull_out_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivPullOutImage"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginStart="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPullOutBorder"
+        app:layout_constraintStart_toStartOf="@+id/ivPullOutBorder"
+        app:layout_constraintTop_toTopOf="@+id/ivPullOutBorder"
+        app:shapeAppearanceOverlay="@style/RoundedCornerImage"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvPullOutProductName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/inter_bold"
+        android:text="Product Name"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivPullOutBorder"
+        app:layout_constraintStart_toEndOf="@+id/ivPullOutImage"
+        app:layout_constraintTop_toTopOf="@+id/ivPullOutImage" />
+
+    <TextView
+        android:id="@+id/tvPullOutStockLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Stock: "
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivPullOutImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvPullOutProductName" />
+
+    <TextView
+        android:id="@+id/tvPullOutStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:text="12"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/tvPullOutStockLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvPullOutProductName" />
+
+    <TextView
+        android:id="@+id/tvPullOutPesoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="₱"
+        android:textColor="@color/peso_green"
+        app:layout_constraintStart_toEndOf="@+id/ivPullOutImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvPullOutStockLabel" />
+
+    <TextView
+        android:id="@+id/tvPullOutPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:text="50.00"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvPullOutPesoLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvPullOutStockLabel" />
+
+    <ImageView
+        android:id="@+id/ivPullOutMinus"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/minus_button"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPullOutAdd"
+        app:layout_constraintEnd_toStartOf="@+id/evPullOutQty"
+        app:layout_constraintTop_toTopOf="@+id/ivPullOutAdd" />
+
+    <ImageView
+        android:id="@+id/ivPullOutAdd"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPullOutBorder"
+        app:layout_constraintEnd_toEndOf="@+id/ivPullOutBorder"
+        android:src="@drawable/add_button" />
+
+    <EditText
+        android:id="@+id/evPullOutQty"
+        android:layout_width="30sp"
+        android:layout_height="24sp"
+        android:layout_marginEnd="4dp"
+        android:background="@null"
+        android:ems="3"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="100"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPullOutAdd"
+        app:layout_constraintEnd_toStartOf="@+id/ivPullOutAdd"
+        app:layout_constraintTop_toTopOf="@+id/ivPullOutAdd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/ivItemBorder"
         android:layout_width="179dp"
-        android:layout_height="231dp"
+        android:layout_height="250dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -24,19 +24,23 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".60" />
 
-    <ImageView
-        android:id="@+id/ivItemImage"
-        android:layout_width="0sp"
-        android:layout_height="0sp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
-        app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
-        app:layout_constraintTop_toTopOf="@+id/ivItemBorder"
-        tools:srcCompat="@tools:sample/avatars" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivItemImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
+            app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
+            app:layout_constraintTop_toTopOf="@+id/ivItemBorder"
+            tools:srcCompat="@tools:sample/avatars"
+            app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
 
     <TextView
-        android:id="@+id/tvProductName"
+        android:id="@+id/tvItemProduct"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -51,7 +55,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <TextView
-        android:id="@+id/tvStock"
+        android:id="@+id/tvItemStockLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -59,22 +63,22 @@
         android:text="Stock: "
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/ivItemImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+        app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemProduct" />
 
     <TextView
-        android:id="@+id/tvAmtStock"
+        android:id="@+id/tvItemStock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_medium"
         android:text="0"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/tvStock"
-        app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+        app:layout_constraintStart_toEndOf="@+id/tvItemStockLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemProduct" />
 
     <TextView
-        android:id="@+id/tvPesoSign"
+        android:id="@+id/tvItemPesoSign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -82,54 +86,53 @@
         android:text="₱ "
         android:textColor="@color/peso_green"
         app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
-        app:layout_constraintTop_toBottomOf="@+id/tvStock" />
+        app:layout_constraintTop_toBottomOf="@+id/tvItemStockLabel" />
 
     <TextView
-        android:id="@+id/tvPrice"
+        android:id="@+id/tvItemPrice"
         android:layout_width="80sp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_medium"
         android:text="10,000.00"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/tvPesoSign"
-        app:layout_constraintTop_toBottomOf="@+id/tvStock" />
+        app:layout_constraintStart_toEndOf="@+id/tvItemPesoSign"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemStockLabel" />
 
     <ImageView
-        android:id="@+id/ivMinus"
+        android:id="@+id/ivItemMinus"
         android:layout_width="20sp"
         android:layout_height="20sp"
-        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/minus_button"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
-        app:layout_constraintStart_toEndOf="@+id/tvPrice"
-        app:layout_constraintTop_toBottomOf="@+id/tvStock" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvItemPrice" />
 
     <ImageView
-        android:id="@+id/ivAdd"
+        android:id="@+id/ivItemAdd"
         android:layout_width="20sp"
         android:layout_height="20sp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/add_button"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/ivItemMinus"
         app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
-        app:layout_constraintStart_toEndOf="@+id/etQty"
-        app:layout_constraintTop_toBottomOf="@+id/tvAmtStock" />
+        app:layout_constraintStart_toEndOf="@+id/etItemQty"
+        app:layout_constraintTop_toTopOf="@+id/ivItemMinus" />
 
     <EditText
-        android:id="@+id/etQty"
-        android:layout_width="24sp"
+        android:id="@+id/etItemQty"
+        android:layout_width="30sp"
         android:layout_height="24sp"
         android:background="@null"
-        android:ems="2"
+        android:ems="3"
         android:fontFamily="@font/inter_medium"
         android:gravity="center"
         android:inputType="number"
         android:text="0"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivMinus"
-        app:layout_constraintEnd_toStartOf="@+id/ivAdd"
-        app:layout_constraintStart_toEndOf="@+id/ivMinus"
-        app:layout_constraintTop_toTopOf="@+id/ivMinus" />
+        app:layout_constraintBottom_toBottomOf="@+id/ivItemMinus"
+        app:layout_constraintEnd_toStartOf="@+id/ivItemAdd"
+        app:layout_constraintStart_toEndOf="@+id/ivItemMinus"
+        app:layout_constraintTop_toTopOf="@+id/ivItemMinus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

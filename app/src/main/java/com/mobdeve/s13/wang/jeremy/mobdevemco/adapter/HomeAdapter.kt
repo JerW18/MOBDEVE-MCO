@@ -10,16 +10,16 @@ class HomeAdapter(private val items: List<Item>) : RecyclerView.Adapter<HomeAdap
 
     class ViewHolder(private val binding: HomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Item) {
-            binding.tvProductName.text = item.name
-            binding.tvPrice.text = item.price.toString()
-            binding.tvStock.text = item.stock.toString()
+            binding.tvItemProduct.text = item.name
+            binding.tvItemPrice.text = item.price.toString()
+            binding.tvItemStock.text = item.stock.toString()
             binding.ivItemImage.setImageResource(item.imageId)
-            binding.ivAdd.setOnClickListener{
-                binding.etQty.setText((binding.etQty.text.toString().toInt() + 1).toString())
+            binding.ivItemAdd.setOnClickListener{
+                binding.etItemQty.setText((binding.etItemQty.text.toString().toInt() + 1).toString())
             }
-            binding.ivMinus.setOnClickListener{
-                if (binding.etQty.text.toString().toInt() > 0)
-                    binding.etQty.setText((binding.etQty.text.toString().toInt() - 1).toString())
+            binding.ivItemMinus.setOnClickListener{
+                if (binding.etItemQty.text.toString().toInt() > 0)
+                    binding.etItemQty.setText((binding.etItemQty.text.toString().toInt() - 1).toString())
             }
         }
     }
