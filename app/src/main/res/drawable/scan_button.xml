@@ -1,0 +1,30 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Rectangle Background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF"/> <!-- Transparent background -->
+            <corners android:radius="9.25dp"/>
+            <size android:width="44dp" android:height="45dp"/>
+            <stroke
+                android:color="#FFFFFF"
+                android:width="1.5dp"/>
+        </shape>
+    </item>
+    <!-- Vector Path -->
+    <item
+        android:gravity="center"> <!-- Center the vector drawable -->
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="19dp"
+            android:height="18dp"
+            android:viewportWidth="19"
+            android:viewportHeight="18">
+
+            <!-- Path drawing -->
+            <path
+                android:strokeColor="#626060"
+                android:strokeWidth="2"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round"
+                android:pathData="M1.5,5V3c0,-0.53043 0.21071,-1.03914 0.58579,-1.41421C2.96086,1.21071 3.46957,1 4,1h2M1.5,13v2c0,0.53043 0.21071,1.03914 0.58579,1.41421C2.96086,16.7893 3.46957,17 4,17h2M13.5,1h2c0.53043,0 1.03914,0.21071 1.41421,0.58579C17.2893,1.96086 17.5,2.46957 17.5,3v2M13.5,17h2c0.53043,0 1.03914,-0.21071 1.41421,-0.58579C17.2893,16.0391 17.5,15.5304 17.5,15v-2M4.5,9h10"/></vector>
+    </item>
+</layer-list>

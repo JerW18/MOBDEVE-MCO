@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivItemBorder"
+        android:layout_width="179dp"
+        android:layout_height="231dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/item_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".60" />
+
+    <ImageView
+        android:id="@+id/ivItemImage"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
+        app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
+        app:layout_constraintTop_toTopOf="@+id/ivItemBorder"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvProductName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/inter"
+        android:text="Product Name"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
+        app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+    <TextView
+        android:id="@+id/tvStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Stock: "
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/ivItemImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+
+    <TextView
+        android:id="@+id/tvAmtStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/tvStock"
+        app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+
+    <TextView
+        android:id="@+id/tvPesoSign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="₱ "
+        android:textColor="@color/peso_green"
+        app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
+        app:layout_constraintTop_toBottomOf="@+id/tvStock" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="80sp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:text="10,000.00"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tvPesoSign"
+        app:layout_constraintTop_toBottomOf="@+id/tvStock" />
+
+    <ImageView
+        android:id="@+id/ivMinus"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/minus_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
+        app:layout_constraintStart_toEndOf="@+id/tvPrice"
+        app:layout_constraintTop_toBottomOf="@+id/tvStock" />
+
+    <ImageView
+        android:id="@+id/ivAdd"
+        android:layout_width="20sp"
+        android:layout_height="20sp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/add_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPrice"
+        app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
+        app:layout_constraintStart_toEndOf="@+id/etQty"
+        app:layout_constraintTop_toBottomOf="@+id/tvAmtStock" />
+
+    <EditText
+        android:id="@+id/etQty"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:background="@null"
+        android:ems="2"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:inputType="number"
+        android:text="0"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivMinus"
+        app:layout_constraintEnd_toStartOf="@+id/ivAdd"
+        app:layout_constraintStart_toEndOf="@+id/ivMinus"
+        app:layout_constraintTop_toTopOf="@+id/ivMinus" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

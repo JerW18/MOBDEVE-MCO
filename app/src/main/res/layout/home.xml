@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/viewGreenTop"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@color/green"
@@ -20,17 +20,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".3" />
+        app:layout_constraintGuide_percent=".2" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivLogo"
         android:layout_width="48sp"
         android:layout_height="45sp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/transparent_logo"
+        app:layout_constraintBottom_toTopOf="@+id/etSearch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        android:src="@drawable/transparent_logo" />
+        app:layout_constraintTop_toTopOf="@+id/viewGreenTop" />
 
     <TextView
         android:id="@+id/tvAppName"
@@ -41,34 +42,34 @@
         android:text="ORGANIZEIT"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
+        app:layout_constraintStart_toEndOf="@+id/ivLogo"
+        app:layout_constraintTop_toTopOf="@+id/ivLogo" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivNotif"
         android:layout_width="44sp"
         android:layout_height="44sp"
         android:layout_marginEnd="20dp"
+        android:src="@drawable/notif_button"
         app:layout_constraintBottom_toBottomOf="@+id/tvAppName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvAppName"
-        app:layout_constraintVertical_bias="0.444"
-        android:src="@drawable/notif_button" />
+        app:layout_constraintVertical_bias="0.444" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/ivSetting"
+        android:layout_width="44sp"
+        android:layout_height="44sp"
         android:layout_marginEnd="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        android:src="@drawable/setting_button" />
+        android:src="@drawable/setting_button"
+        app:layout_constraintBottom_toBottomOf="@+id/ivNotif"
+        app:layout_constraintEnd_toStartOf="@+id/ivNotif"
+        app:layout_constraintTop_toTopOf="@+id/ivNotif" />
 
     <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="320sp"
+        android:id="@+id/etSearch"
+        android:layout_width="0sp"
         android:layout_height="52sp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="-26dp"
@@ -78,19 +79,102 @@
         android:inputType="text"
         android:padding="12sp"
         android:paddingStart="48sp"
-        android:text="Search Products..."
+        android:hint="Search Products..."
         android:textColor="@color/gray"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivSetting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/viewGreenTop" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/ivSearchIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextText"
-        app:layout_constraintStart_toStartOf="@+id/editTextText"
-        app:layout_constraintTop_toTopOf="@+id/editTextText"
-        app:srcCompat="@drawable/search_icon" />
+        android:src="@drawable/search_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/etSearch"
+        app:layout_constraintStart_toStartOf="@+id/etSearch"
+        app:layout_constraintTop_toTopOf="@+id/etSearch" />
+
+    <ImageView
+        android:id="@+id/ivScan"
+        android:layout_width="47sp"
+        android:layout_height="52sp"
+        android:layout_marginTop="-26dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/scan_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <ImageView
+        android:id="@+id/ivCart"
+        android:layout_width="match_parent"
+        android:layout_height="87sp"
+        android:scaleType="fitXY"
+        android:src="@drawable/cart_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/tvNumItemSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="No items selected"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvTotal"
+        app:layout_constraintStart_toStartOf="@+id/ivCart"
+        app:layout_constraintTop_toTopOf="@+id/ivCart" />
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Total: "
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCart"
+        app:layout_constraintStart_toStartOf="@+id/ivCart"
+        app:layout_constraintTop_toBottomOf="@+id/tvNumItemSelected" />
+
+    <TextView
+        android:id="@+id/tvTotalSum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_bold"
+        android:text="₱ 0.00"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCart"
+        app:layout_constraintStart_toEndOf="@+id/tvTotal"
+        app:layout_constraintTop_toBottomOf="@+id/tvNumItemSelected" />
+
+    <Button
+        android:id="@+id/btnReview"
+        android:layout_width="120sp"
+        android:layout_height="60sp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/active_button"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Review →"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivCart" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerHome"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16sp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/ivCart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSearch" />
 </androidx.constraintlayout.widget.ConstraintLayout>
