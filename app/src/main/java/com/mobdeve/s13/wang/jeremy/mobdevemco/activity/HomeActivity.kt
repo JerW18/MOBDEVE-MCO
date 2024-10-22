@@ -15,7 +15,7 @@ class HomeActivity: ComponentActivity() {
     private lateinit var binding: HomeBinding
     private val itemList = mutableListOf<Item>()
     override fun onCreate(savedInstanceState: Bundle?) {
-        for (i in 0 until 10) {
+        for (i in 0 until 11) {
             itemList.add(Item(imageId = R.drawable.image1, name = "Item${i + 1}", price = 100.55f, stock = 10))
         }
 
