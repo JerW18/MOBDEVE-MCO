@@ -49,6 +49,15 @@ class HomeActivity: ComponentActivity() {
             val intent = Intent(this, NotifActivity::class.java)
             startActivity(intent)
         }
+        binding.ivSetting.setOnClickListener{
+            val intent = Intent(this, ProductSettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.ivScan.setOnClickListener{
+            val intent = Intent(this, ScanActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

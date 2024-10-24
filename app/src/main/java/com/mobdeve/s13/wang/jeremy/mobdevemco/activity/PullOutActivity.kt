@@ -28,6 +28,9 @@ class PullOutActivity: ComponentActivity() {
         binding.ivPullOutBack.setOnClickListener {
             finish()
         }
+        binding.btnPullOut.setOnClickListener {
+            finish()
+        }
         binding.recyclerPullOut.layoutManager = LinearLayoutManager(this)
         binding.recyclerPullOut.adapter = PullOutAdapter(itemList)
 

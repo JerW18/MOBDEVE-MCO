@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivPSEditBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/pull_out_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivPSEditImage"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:layout_marginStart="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPSEditBorder"
+        app:layout_constraintStart_toStartOf="@+id/ivPSEditBorder"
+        app:layout_constraintTop_toTopOf="@+id/ivPSEditBorder"
+        app:shapeAppearanceOverlay="@style/RoundedCornerImage"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvPSEditProductName"
+        android:layout_width="128sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_bold"
+        android:text="Product Name"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/ivPSEditImage"
+        app:layout_constraintTop_toTopOf="@+id/ivPSEditImage" />
+
+    <TextView
+        android:id="@+id/tvPSEditStockLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Stock: "
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivPSEditImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvPSEditProductName" />
+
+    <TextView
+        android:id="@+id/tvPSEditStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:text="12"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/tvPSEditStockLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvPSEditProductName" />
+
+    <TextView
+        android:id="@+id/tvPSEditPesoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="₱"
+        android:textColor="@color/peso_green"
+        app:layout_constraintStart_toEndOf="@+id/ivPSEditImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvPSEditStockLabel" />
+
+    <TextView
+        android:id="@+id/tvPSEditPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_medium"
+        android:text="50.00"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvPSEditPesoLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvPSEditStockLabel" />
+
+    <Button
+        android:id="@+id/tvPSEdit"
+        android:layout_width="88sp"
+        android:layout_height="32sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/active_button"
+        android:fontFamily="@font/inter_bold"
+        android:text="Edit"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvPSDelete"
+        app:layout_constraintEnd_toEndOf="@+id/ivPSEditBorder"
+        app:layout_constraintTop_toTopOf="@+id/ivPSEditBorder" />
+
+    <Button
+        android:id="@+id/tvPSDelete"
+        android:layout_width="88sp"
+        android:layout_height="32sp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/inactive_button"
+        android:fontFamily="@font/inter_bold"
+        android:text="Delete"
+        android:textColor="@color/green"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPSEditBorder"
+        app:layout_constraintEnd_toEndOf="@+id/ivPSEditBorder"
+        app:layout_constraintTop_toBottomOf="@+id/tvPSEdit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

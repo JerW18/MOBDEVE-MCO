@@ -62,14 +62,13 @@
         android:id="@+id/btnLoginHeader"
         android:layout_width="176sp"
         android:layout_height="44sp"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/active_button"
         android:fontFamily="@font/inter_bold"
         android:text="Log In"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/viewButtonBackground"
         app:layout_constraintTop_toBottomOf="@+id/tvDef" />
 
     <Button
@@ -77,12 +76,11 @@
         android:layout_width="176sp"
         android:layout_height="44sp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="28dp"
         android:background="@drawable/inactive_button"
         android:fontFamily="@font/inter_bold"
         android:text="Sign Up"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/viewButtonBackground"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/btnLoginHeader"
         app:layout_constraintTop_toBottomOf="@+id/tvDef" />
