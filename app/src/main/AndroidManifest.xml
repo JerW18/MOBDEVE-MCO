@@ -15,7 +15,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/normal_logo"
-        android:label="ORGANIZEIT"
+        android:label="OrganizeIT"
         android:roundIcon="@drawable/normal_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MOBDEVEMCO"
