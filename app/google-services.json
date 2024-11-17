@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "250955435681",
+    "project_id": "mobdeve-mco-34f70",
+    "storage_bucket": "mobdeve-mco-34f70.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250955435681:android:c7ac12d2a4b599c2ffeae0",
+        "android_client_info": {
+          "package_name": "com.mobdeve.s13.wang.jeremy.mobdevemco"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "250955435681-4oqo0lb77skvarbdi7dljgs3d5vquhel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobdeve.s13.wang.jeremy.mobdevemco",
+            "certificate_hash": "2c3ebbf291cf2580b1b22f752ae745ab85a9bbc7"
+          }
+        },
+        {
+          "client_id": "250955435681-2920seqp43a874tqd9qkor4lhnjn8tem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9SI6Tjj_0DCtn55CCkjfpbtEBe45Lhzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "250955435681-2920seqp43a874tqd9qkor4lhnjn8tem.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
