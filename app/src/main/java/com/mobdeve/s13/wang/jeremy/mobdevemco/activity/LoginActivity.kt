@@ -14,10 +14,13 @@ import androidx.core.content.ContextCompat
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LoginBinding
 import android.util.TypedValue
 import android.widget.ImageView
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 
 class LoginActivity : ComponentActivity() {
     private lateinit var binding: LoginBinding
+    private lateinit var auth: FirebaseAuth
     private lateinit var state: String
     private lateinit var passwordState: String
     private lateinit var confirmPasswordState: String
@@ -25,6 +28,7 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
+        auth = FirebaseAuth.getInstance()
         initUI()
         setContentView(binding.root)
     }
@@ -76,6 +80,9 @@ class LoginActivity : ComponentActivity() {
         }
 
         binding.btnSignUpHeader.setOnClickListener {
+            binding.etUsername.text.clear()
+            binding.etPassword.text.clear()
+            binding.etConfirmPassword.text.clear()
             if (state=="login"){
                 binding.btnSignUpHeader.setTextColor(ContextCompat.getColor(this, R.color.white))
                 binding.btnLoginHeader.setTextColor(ContextCompat.getColor(this, R.color.black))
@@ -93,6 +100,9 @@ class LoginActivity : ComponentActivity() {
         }
 
         binding.btnLoginHeader.setOnClickListener {
+            binding.etUsername.text.clear()
+            binding.etPassword.text.clear()
+            binding.etConfirmPassword.text.clear()
             if (state=="signup"){
                 binding.btnSignUpHeader.setTextColor(ContextCompat.getColor(this, R.color.black))
                 binding.btnLoginHeader.setTextColor(ContextCompat.getColor(this, R.color.white))
@@ -109,11 +119,62 @@ class LoginActivity : ComponentActivity() {
                 binding.btnSubmit.text = "Log In"
             }
         }
+
         binding.btnSubmit.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
+            val email = binding.etUsername.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+
+            if (state == "login") {
+                loginUser(email, password)
+            } else {
+                val confirmPassword = binding.etConfirmPassword.text.toString().trim()
+                if (password == confirmPassword) {
+                    registerUser(email, password)
+                } else {
+                    Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
+    }
+
+    private fun loginUser(email: String, password: String) {
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+
+                        // Redirect to HomeActivity
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun registerUser(email: String, password: String) {
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+
+                        // Redirect to HomeActivity
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+        }
     }
 }

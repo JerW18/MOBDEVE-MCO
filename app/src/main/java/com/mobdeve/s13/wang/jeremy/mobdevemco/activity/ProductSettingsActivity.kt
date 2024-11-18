@@ -25,6 +25,8 @@ class ProductSettingsActivity: ComponentActivity() {
         for (i in 0 until 11) {
             itemList.add(
                 Item(
+                    itemID = i,
+                    itemSKU = 1,
                     imageId = R.drawable.image1,
                     name = "Item${i + 1}",
                     price = 100.55f,
