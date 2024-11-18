@@ -11,7 +11,7 @@ class EditAdapter(private val items: List<Item>) : RecyclerView.Adapter<EditAdap
 
     class ViewHolder(private val binding: EditItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Item) {
-            binding.ivPSEditImage.setImageURI(Uri.parse(item.imageUri))
+//            binding.ivPSEditImage.setImageURI(Uri.parse(item.imageUri))
             binding.tvPSEditPrice.text = item.price.toString()
             binding.tvPSEditStock.text = item.stock.toString()
             binding.tvPSEditProductName.text = item.name

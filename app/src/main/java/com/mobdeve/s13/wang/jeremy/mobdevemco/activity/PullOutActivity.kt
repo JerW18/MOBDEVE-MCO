@@ -14,9 +14,6 @@ class PullOutActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        for (i in 0 until 11) {
-            itemList.add(Item(itemSKU = 1, imageUri = R.drawable.image1.toString(), name = "Item${i + 1}", price = 100.55f, stock = 10))
-        }
         binding = PullOutBinding.inflate(layoutInflater)
         initUI()
         setContentView(binding.root)

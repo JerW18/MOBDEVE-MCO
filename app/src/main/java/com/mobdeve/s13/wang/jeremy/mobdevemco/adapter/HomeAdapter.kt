@@ -1,6 +1,9 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +17,7 @@ class HomeAdapter(private val items: List<Item>) : RecyclerView.Adapter<HomeAdap
             binding.tvItemProduct.text = item.name
             binding.tvItemPrice.text = item.price.toString()
             binding.tvItemStock.text = item.stock.toString()
-            binding.ivItemImage.setImageURI(Uri.parse(item.imageUri))
+            binding.ivItemImage.setImageBitmap(decodeBase64ToBitmap(item.imageUri))
             binding.ivItemAdd.setOnClickListener{
                 binding.etItemQty.setText((binding.etItemQty.text.toString().toInt() + 1).toString())
             }
@@ -23,7 +26,17 @@ class HomeAdapter(private val items: List<Item>) : RecyclerView.Adapter<HomeAdap
                     binding.etItemQty.setText((binding.etItemQty.text.toString().toInt() - 1).toString())
             }
         }
+
+        fun decodeBase64ToBitmap(base64String: String?): Bitmap? {
+            return base64String?.let {
+                val decodedBytes = Base64.decode(it, Base64.DEFAULT)
+                BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+            }
+        }
     }
+
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)

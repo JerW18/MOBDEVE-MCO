@@ -13,7 +13,7 @@ class PullOutAdapter(private val items: List<Item>) : RecyclerView.Adapter<PullO
         fun bindData(item: Item) {
             binding.tvPullOutPrice.text = item.price.toString()
             binding.evPullOutQty.setText(item.stock.toString())
-            binding.ivPullOutImage.setImageURI(Uri.parse(item.imageUri))
+//            binding.ivPullOutImage.setImageURI(Uri.parse(item.imageUri))
             binding.tvPullOutProductName.text = item.name
 
         }
