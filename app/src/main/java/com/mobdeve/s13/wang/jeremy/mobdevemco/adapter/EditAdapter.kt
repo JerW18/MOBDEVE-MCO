@@ -1,5 +1,6 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,7 @@ class EditAdapter(private val items: List<Item>) : RecyclerView.Adapter<EditAdap
 
     class ViewHolder(private val binding: EditItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Item) {
-            binding.ivPSEditImage.setImageResource(item.imageId)
+            binding.ivPSEditImage.setImageURI(Uri.parse(item.imageUri))
             binding.tvPSEditPrice.text = item.price.toString()
             binding.tvPSEditStock.text = item.stock.toString()
             binding.tvPSEditProductName.text = item.name

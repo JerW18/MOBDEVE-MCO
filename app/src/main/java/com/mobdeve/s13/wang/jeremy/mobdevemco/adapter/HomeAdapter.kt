@@ -1,5 +1,6 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ class HomeAdapter(private val items: List<Item>) : RecyclerView.Adapter<HomeAdap
             binding.tvItemProduct.text = item.name
             binding.tvItemPrice.text = item.price.toString()
             binding.tvItemStock.text = item.stock.toString()
-            binding.ivItemImage.setImageResource(item.imageId)
+            binding.ivItemImage.setImageURI(Uri.parse(item.imageUri))
             binding.ivItemAdd.setOnClickListener{
                 binding.etItemQty.setText((binding.etItemQty.text.toString().toInt() + 1).toString())
             }

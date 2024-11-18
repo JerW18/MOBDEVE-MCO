@@ -6,6 +6,7 @@ import android.text.InputType
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
@@ -16,27 +17,44 @@ import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 
 class LoginActivity : ComponentActivity() {
     private lateinit var binding: LoginBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var state: String
-    private lateinit var passwordState: String
-    private lateinit var confirmPasswordState: String
+    private var state: String = "login"
+    private var passwordState: String = "hidden"
+    private var confirmPasswordState: String = "hidden"
+    private var fStore: FirebaseFirestore? = null
+    private var documentReference: DocumentReference? = null
+    private var user: Map<String, Any>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //request camera permission
+        val cameraPermission = arrayOf(android.Manifest.permission.CAMERA)
+        requestPermissions(cameraPermission, 101)
+
+        //request storage permission
+        val storagePermission = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        requestPermissions(storagePermission, 102)
+
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)
+        fStore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            navigateToHome()
+        }
+
         initUI()
         setContentView(binding.root)
     }
 
     private fun initUI(){
-        state="login"
-        passwordState="hidden"
-        confirmPasswordState="hidden"
         val text = binding.tvWelcome.text.toString()
         val spannableString = SpannableString(text)
 
@@ -95,10 +113,9 @@ class LoginActivity : ComponentActivity() {
                 binding.btnLoginHeader.background = ContextCompat.getDrawable(this, R.drawable.inactive_button)
                 binding.btnSignUpHeader.background = ContextCompat.getDrawable(this, R.drawable.active_button)
                 state="signup"
-                binding.btnSubmit.text = "Sign Up"
+                binding.btnSubmit.text = getString(R.string.signup_button)
             }
         }
-
         binding.btnLoginHeader.setOnClickListener {
             binding.etUsername.text.clear()
             binding.etPassword.text.clear()
@@ -116,7 +133,7 @@ class LoginActivity : ComponentActivity() {
                 binding.btnLoginHeader.background = ContextCompat.getDrawable(this, R.drawable.active_button)
                 binding.btnSignUpHeader.background = ContextCompat.getDrawable(this, R.drawable.inactive_button)
                 state="login"
-                binding.btnSubmit.text = "Log In"
+                binding.btnSubmit.text = getString(R.string.login_button)
             }
         }
 
@@ -146,9 +163,7 @@ class LoginActivity : ComponentActivity() {
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
 
                         // Redirect to HomeActivity
-                        val intent = Intent(this, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        navigateToHome()
                     } else {
                         Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
@@ -165,10 +180,23 @@ class LoginActivity : ComponentActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
 
+                        // Initialize fStore if not done yet
+                        fStore = FirebaseFirestore.getInstance()
+
+                        documentReference = fStore!!.collection("users").document(auth.currentUser!!.uid)
+
+                        user = hashMapOf(
+                            "email" to email
+                        )
+
+                        documentReference!!.set(user!!).addOnSuccessListener {
+                            Log.d("REGISTER", "onSuccess: user Profile is created for ${auth.currentUser!!.uid}")
+                        }.addOnFailureListener {
+                            Log.d("REGISTER", "onFailure: ${it.message}")
+                        }
+
                         // Redirect to HomeActivity
-                        val intent = Intent(this, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        navigateToHome()
                     } else {
                         Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
@@ -176,5 +204,11 @@ class LoginActivity : ComponentActivity() {
         } else {
             Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

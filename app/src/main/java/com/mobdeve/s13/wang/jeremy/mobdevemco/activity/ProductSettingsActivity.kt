@@ -1,14 +1,26 @@
-
-
 package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.ContentValues
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.EditAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.LogsAdapter
@@ -20,14 +32,55 @@ class ProductSettingsActivity: ComponentActivity() {
     private val numList = mutableListOf<Int>()
     private val itemList = mutableListOf<Item>()
     private var state = "ADD"
+    private var imageUri: String? = null
+
+    private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
+    private val galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val selectedImageUri: Uri? = result.data?.data
+            selectedImageUri?.let {
+                imageUri = it.toString()
+                // Handle the image URI
+                Toast.makeText(this, "Image selected: $imageUri", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private val cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val capturedImageUri: Uri? = result.data?.data
+            capturedImageUri?.let {
+                imageUri = it.toString()
+                // Handle the captured image URI
+                Toast.makeText(this, "Image captured: $imageUri", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                openCamera() // If permission is granted, open the camera
+            } else {
+                // If permission is denied, show a Toast message
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+
+                // Optionally, check if the user has permanently denied the permission
+                if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    // If the user denied the permission, we can prompt them again or explain
+                    Toast.makeText(this, "Please grant the camera permission to take photos.", Toast.LENGTH_LONG).show()
+                } else {
+                    // If permission is permanently denied, guide the user to settings
+                    Toast.makeText(this, "Camera permission is permanently denied. Please enable it in app settings.", Toast.LENGTH_LONG).show()
+                    openAppSettings()
+                }
+            }
+        }
+
         for (i in 0 until 11) {
             itemList.add(
                 Item(
-                    itemID = i,
                     itemSKU = 1,
-                    imageId = R.drawable.image1,
+                    imageUri = R.drawable.image1.toString(),
                     name = "Item${i + 1}",
                     price = 100.55f,
                     stock = 10
@@ -42,7 +95,6 @@ class ProductSettingsActivity: ComponentActivity() {
         initUI()
         setContentView(binding.root)
     }
-
 
     private fun initUI() {
         binding.btnPSAdd.isAllCaps = false
@@ -71,14 +123,29 @@ class ProductSettingsActivity: ComponentActivity() {
             visibleViews.forEach { it.visibility = View.VISIBLE }
             goneViews.forEach { it.visibility = View.GONE }
         }
+
         binding.btnSaveProduct.setOnClickListener {
-            finish()
+            val name = binding.etPSProductName.text.toString()
+            val quantity = binding.etPSQty.text.toString().toIntOrNull() ?: 0
+            val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
+
+            // Create a Product object with the input data
+            val item = Item(1L, imageUri ?: "", name, price.toFloat(), quantity)
+
+            // Call function to save product to Firebase
+            saveItemToDatabase(item)
+
+            // Clear the input fields
+            binding.etPSProductName.text.clear()
+            binding.etPSQty.text.clear()
+            binding.etPSPrice.text.clear()
         }
+
         binding.btnPSAdd.setOnClickListener {
             if (state != "ADD") {
                 setButtonState(binding.btnPSAdd, true)
                 toggleVisibility(
-                    listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductNumber, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct),
+                    listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct),
                     emptyList()
                 )
 
@@ -104,7 +171,7 @@ class ProductSettingsActivity: ComponentActivity() {
                 when (state) {
                     "ADD" -> {
                         setButtonState(binding.btnPSAdd, false)
-                        toggleVisibility(emptyList(), listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductNumber, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct))
+                        toggleVisibility(emptyList(), listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct))
                     }
                     "LOGS" -> {
                         setButtonState(binding.btnPSLogs, false)
@@ -126,7 +193,7 @@ class ProductSettingsActivity: ComponentActivity() {
                 when (state) {
                     "ADD" -> {
                         setButtonState(binding.btnPSAdd, false)
-                        toggleVisibility(emptyList(), listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductNumber, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct))
+                        toggleVisibility(emptyList(), listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct))
                     }
                     "EDIT" -> {
                         setButtonState(binding.btnPSEdit, false)
@@ -137,5 +204,73 @@ class ProductSettingsActivity: ComponentActivity() {
             }
         }
 
+        // Handle image selection via gallery
+        binding.etPSImage.setOnClickListener {
+            showImagePickerDialog()
+        }
+    }
+
+    private fun saveItemToDatabase(item: Item) {
+        val database = FirebaseFirestore.getInstance()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val itemsRef = database.collection("users")
+                .document(userId)  // Reference to the user's document
+                .collection("items")  // Subcollection to store items
+
+            itemsRef.add(item)
+                .addOnSuccessListener { documentReference ->
+                    Log.d(
+                        ContentValues.TAG,
+                        "DocumentSnapshot added with ID: ${documentReference.id}"
+                    )
+                    Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.w(ContentValues.TAG, "Error adding document", e)
+                    Toast.makeText(this, "Failed to add product", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showImagePickerDialog() {
+        val options = arrayOf("Choose from Gallery", "Take a Photo")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Image Source")
+        builder.setItems(options) { _, which ->
+            when (which) {
+                0 -> openGallery() // Choose from Gallery
+                1 -> openCamera() // Take a Photo
+            }
+        }
+        builder.show()
+    }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryResultLauncher.launch(intent)
+    }
+    private fun openCamera() {
+        // Check if the CAMERA permission is granted
+        when {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
+                // Permission granted, open the camera
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraResultLauncher.launch(intent)
+            }
+            else -> {
+                // Request permission
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        }
+    }
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 }

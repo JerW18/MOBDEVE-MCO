@@ -18,13 +18,14 @@ class HomeActivity: ComponentActivity() {
     private val itemList = mutableListOf<Item>()
     override fun onCreate(savedInstanceState: Bundle?) {
         for (i in 0 until 11) {
-            itemList.add(Item(itemID = i, itemSKU = 1, imageId = R.drawable.image1, name = "Item${i + 1}", price = 100.55f, stock = 10))
+            itemList.add(Item(itemSKU = 1, imageUri = R.drawable.image1.toString(), name = "Item${i + 1}", price = 100.55f, stock = 10))
         }
 
-            super.onCreate(savedInstanceState)
-            binding = HomeBinding.inflate(layoutInflater)
-            initUI()
-            setContentView(binding.root)
+        super.onCreate(savedInstanceState)
+        binding = HomeBinding.inflate(layoutInflater)
+
+        initUI()
+        setContentView(binding.root)
     }
 
     private fun initUI(){
