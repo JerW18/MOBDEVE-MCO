@@ -125,17 +125,19 @@ class ProductSettingsActivity: ComponentActivity() {
         }
 
         binding.btnSaveProduct.setOnClickListener {
+            val sku = binding.etPSProductSKU.text.toString().toLongOrNull() ?: 0
             val name = binding.etPSProductName.text.toString()
             val quantity = binding.etPSQty.text.toString().toIntOrNull() ?: 0
             val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
 
             // Create a Product object with the input data
-            val item = Item(1L, imageUri ?: "", name, price.toFloat(), quantity)
+            val item = Item(sku, imageUri ?: "", name, price.toFloat(), quantity)
 
             // Call function to save product to Firebase
             saveItemToDatabase(item)
 
             // Clear the input fields
+            binding.etPSProductSKU.text.clear()
             binding.etPSProductName.text.clear()
             binding.etPSQty.text.clear()
             binding.etPSPrice.text.clear()
@@ -145,7 +147,7 @@ class ProductSettingsActivity: ComponentActivity() {
             if (state != "ADD") {
                 setButtonState(binding.btnPSAdd, true)
                 toggleVisibility(
-                    listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct),
+                    listOf(binding.tvPSProductSKULabel, binding.etPSProductSKU, binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct),
                     emptyList()
                 )
 
@@ -171,7 +173,7 @@ class ProductSettingsActivity: ComponentActivity() {
                 when (state) {
                     "ADD" -> {
                         setButtonState(binding.btnPSAdd, false)
-                        toggleVisibility(emptyList(), listOf(binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct))
+                        toggleVisibility(emptyList(), listOf(binding.tvPSProductSKULabel, binding.etPSProductSKU, binding.tvPSProductNameLabel, binding.tvPSPriceLabel, binding.tvPSQtyLabel, binding.tvPSImageLabel, binding.etPSProductName, binding.etPSPrice, binding.etPSQty, binding.etPSImage, binding.btnSaveProduct))
                     }
                     "LOGS" -> {
                         setButtonState(binding.btnPSLogs, false)

@@ -97,17 +97,34 @@
         app:layout_constraintTop_toTopOf="@+id/viewPSButtonBackground" />
 
     <TextView
-        android:id="@+id/tvPSProductNameLabel"
+        android:id="@+id/tvPSProductSKULabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/inter_medium"
-        android:text="Product Name"
+        android:text="Product SKU"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/viewPSButtonBackground"
         app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
+
+    <EditText
+        android:id="@+id/etPSProductSKU"
+        android:layout_width="352sp"
+        android:layout_height="56sp"
+        android:background="@drawable/input_field"
+        android:fontFamily="@font/inter_medium"
+        android:hint="Product SKU"
+        android:inputType="text"
+        android:padding="12sp"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/viewPSButtonBackground"
+        app:layout_constraintTop_toBottomOf="@+id/tvPSProductSKULabel" />
 
     <EditText
         android:id="@+id/etPSProductName"
@@ -125,6 +142,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/viewPSButtonBackground"
         app:layout_constraintTop_toBottomOf="@+id/tvPSProductNameLabel" />
+
+    <TextView
+        android:id="@+id/tvPSProductNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/inter_medium"
+        android:text="Product Name"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/viewPSButtonBackground"
+        app:layout_constraintTop_toBottomOf="@+id/etPSProductSKU" />
 
     <TextView
         android:id="@+id/tvPSQtyLabel"

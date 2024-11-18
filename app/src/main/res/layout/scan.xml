@@ -145,28 +145,26 @@
         android:id="@+id/btnScanPullOut"
         android:layout_width="140sp"
         android:layout_height="60sp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/active_button"
         android:fontFamily="@font/inter_semibold"
         android:text="Add to cart"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <Button
         android:id="@+id/btnScanAgain"
         android:layout_width="140sp"
         android:layout_height="60sp"
-        android:layout_marginStart="8dp"
         android:background="@drawable/inactive_button"
         android:fontFamily="@font/inter_semibold"
         android:text="Scan Again"
         android:textColor="@color/green"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <ImageView
@@ -267,14 +265,14 @@
 
     <EditText
         android:id="@+id/etScanQty"
-        android:layout_width="30sp"
-        android:layout_height="24sp"
+        android:layout_width="50dp"
+        android:layout_height="24dp"
         android:layout_marginEnd="4dp"
         android:background="@null"
         android:ems="3"
         android:gravity="center"
         android:inputType="number"
-        android:text="100"
+        android:text="1000"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/ivScanAdd"
         app:layout_constraintEnd_toStartOf="@+id/ivScanAdd"
