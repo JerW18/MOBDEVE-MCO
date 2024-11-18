@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.PullOutItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 
-class PullOutAdapter(private val items: List<Item>) : RecyclerView.Adapter<PullOutAdapter.ViewHolder>() {
+class PullOutAdapter(private val items: List<Item>) :
+    RecyclerView.Adapter<PullOutAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: PullOutItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: PullOutItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Item) {
             binding.tvPullOutPrice.text = item.price.toString()
             binding.evPullOutQty.setText(item.stock.toString())

@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.Item.Companion.itemList
 
-class HomeActivity: ComponentActivity() {
+class HomeActivity : ComponentActivity() {
     private lateinit var binding: HomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class HomeActivity: ComponentActivity() {
         }
     }
 
-    override fun onResume(){
+    override fun onResume() {
         super.onResume()
         binding.recyclerHome.adapter?.notifyDataSetChanged()
     }
@@ -73,7 +73,7 @@ class HomeActivity: ComponentActivity() {
         }
     }
 
-    private fun initUI(){
+    private fun initUI() {
         val text = binding.tvAppName.text.toString()
         val spannableString = SpannableString(text)
         val startIndex = text.indexOf("IT")
@@ -86,21 +86,21 @@ class HomeActivity: ComponentActivity() {
         binding.recyclerHome.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerHome.adapter = HomeAdapter(itemList)
 
-        binding.btnReview.setOnClickListener{
+        binding.btnReview.setOnClickListener {
             val intent = Intent(this, PullOutActivity::class.java)
             startActivity(intent)
         }
 
-        binding.ivNotif.setOnClickListener{
+        binding.ivNotif.setOnClickListener {
             val intent = Intent(this, NotifActivity::class.java)
             startActivity(intent)
         }
-        binding.ivSetting.setOnClickListener{
+        binding.ivSetting.setOnClickListener {
             val intent = Intent(this, ProductSettingsActivity::class.java)
             startActivity(intent)
         }
 
-        binding.ivScan.setOnClickListener{
+        binding.ivScan.setOnClickListener {
             val intent = Intent(this, ScanActivity::class.java)
             startActivity(intent)
         }

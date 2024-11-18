@@ -47,8 +47,14 @@ class SplashActivity : ComponentActivity() {
                         val text = binding.tvSplashText.text.toString()
                         val spannable = SpannableString(text)
 
-                        val colorSpan = ForegroundColorSpan(ContextCompat.getColor(this, R.color.green))
-                        spannable.setSpan(colorSpan, 8, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        val colorSpan =
+                            ForegroundColorSpan(ContextCompat.getColor(this, R.color.green))
+                        spannable.setSpan(
+                            colorSpan,
+                            8,
+                            spannable.length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
                         splashText.text = spannable
                         splashText.visibility = android.view.View.VISIBLE
                         splashText.alpha = 0f

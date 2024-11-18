@@ -7,7 +7,8 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.NotifItemBinding
 
 class NotifAdapter(private val items: List<Int>) : RecyclerView.Adapter<NotifAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: NotifItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: NotifItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Int) {
 
         }

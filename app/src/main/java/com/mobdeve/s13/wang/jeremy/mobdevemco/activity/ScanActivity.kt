@@ -2,7 +2,6 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.ImageFormat
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -53,7 +52,9 @@ class ScanActivity : ComponentActivity() {
 
         binding.ivScanMinus.setOnClickListener {
             if (binding.etScanQty.text.toString().toInt() > 1) {
-                binding.etScanQty.setText((binding.etScanQty.text.toString().toInt() - 1).toString())
+                binding.etScanQty.setText(
+                    (binding.etScanQty.text.toString().toInt() - 1).toString()
+                )
             }
         }
         binding.ivScanAdd.setOnClickListener {
@@ -62,16 +63,18 @@ class ScanActivity : ComponentActivity() {
     }
 
     private fun initCamera() {
-        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                startCamera()
-            } else {
-                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+                if (isGranted) {
+                    startCamera()
+                } else {
+                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_GRANTED) {
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             startCamera()
         } else {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)

@@ -27,7 +27,7 @@ class EditAdapter(private val items: List<Item>) : RecyclerView.Adapter<EditAdap
         return ViewHolder(binding)
     }
 
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindData(items[position])
     }
 
