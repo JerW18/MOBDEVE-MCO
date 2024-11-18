@@ -110,7 +110,7 @@
         app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
 
     <EditText
-        android:id="@+id/etPSProductNumber"
+        android:id="@+id/etPSProductName"
         android:layout_width="352sp"
         android:layout_height="56sp"
         android:background="@drawable/input_field"
@@ -137,13 +137,12 @@
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/viewPSButtonBackground"
-        app:layout_constraintTop_toBottomOf="@+id/etPSProductNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/etPSProductName" />
 
     <EditText
         android:id="@+id/etPSQty"
         android:layout_width="352sp"
         android:layout_height="56sp"
-        android:layout_marginEnd="28dp"
         android:background="@drawable/input_field"
         android:fontFamily="@font/inter_medium"
         android:hint="Quantitiy"
@@ -153,6 +152,7 @@
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
         app:layout_constraintTop_toBottomOf="@+id/tvPSQtyLabel" />
 
@@ -173,7 +173,6 @@
         android:id="@+id/etPSPrice"
         android:layout_width="352sp"
         android:layout_height="56sp"
-        android:layout_marginEnd="28dp"
         android:background="@drawable/input_field"
         android:fontFamily="@font/inter_medium"
         android:hint="Price"
@@ -183,6 +182,7 @@
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
         app:layout_constraintTop_toBottomOf="@+id/tvPSPriceLabel" />
 
@@ -199,11 +199,10 @@
         app:layout_constraintStart_toStartOf="@+id/viewPSButtonBackground"
         app:layout_constraintTop_toBottomOf="@+id/etPSPrice" />
 
-    <Button
+    <ImageButton
         android:id="@+id/etPSImage"
         android:layout_width="352sp"
         android:layout_height="56sp"
-        android:layout_marginEnd="28dp"
         android:background="@drawable/input_field"
         android:fontFamily="@font/inter_medium"
         android:gravity="start|center_vertical"
@@ -214,6 +213,7 @@
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
         app:layout_constraintTop_toBottomOf="@+id/tvPSImageLabel" />
 

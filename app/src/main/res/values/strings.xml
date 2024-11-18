@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MOBDEVE MCO</string>
+    <string name="login_button">Login</string>
+    <string name="signup_button">Sign Up</string>
 </resources>
