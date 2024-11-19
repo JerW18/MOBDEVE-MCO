@@ -180,6 +180,8 @@ class ProductSettingsActivity : ComponentActivity() {
                     "EDIT" -> {
                         setButtonState(binding.btnPSEdit, false)
                         binding.recyclerEdit.visibility = View.GONE
+                        binding.etSearchEdit.visibility = View.GONE
+                        binding.ivSearchIconEdit.visibility = View.GONE
                     }
 
                     "LOGS" -> {
@@ -203,6 +205,8 @@ class ProductSettingsActivity : ComponentActivity() {
         binding.btnPSEdit.setOnClickListener {
             if (state != "EDIT") {
                 binding.recyclerEdit.visibility = View.VISIBLE
+                binding.etSearchEdit.visibility = View.VISIBLE
+                binding.ivSearchIconEdit.visibility = View.VISIBLE
                 setButtonState(binding.btnPSEdit, true)
 
                 when (state) {
@@ -284,6 +288,8 @@ class ProductSettingsActivity : ComponentActivity() {
                     "EDIT" -> {
                         setButtonState(binding.btnPSEdit, false)
                         binding.recyclerEdit.visibility = View.GONE
+                        binding.etSearchEdit.visibility = View.GONE
+                        binding.ivSearchIconEdit.visibility = View.GONE
                     }
                 }
                 state = "LOGS"

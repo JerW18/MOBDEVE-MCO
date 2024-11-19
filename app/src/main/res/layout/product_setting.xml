@@ -98,6 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -318,18 +319,50 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/viewPSButtonBackground"
             app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
-            app:layout_constraintTop_toBottomOf="@+id/tvPSDateAndTime" />
+            app:layout_constraintTop_toBottomOf="@+id/tvPSDateAndTime" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <EditText
+            android:id="@+id/etSearchEdit"
+            android:layout_width="0sp"
+            android:layout_height="52sp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/input_field"
+            android:ems="10"
+            android:fontFamily="@font/inter_medium"
+            android:hint="Search Products..."
+            android:inputType="text"
+            android:padding="12sp"
+            android:paddingStart="48sp"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/viewPSButtonBackground"
+            app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
+            app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
+
+        <ImageView
+            android:id="@+id/ivSearchIconEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/search_icon"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/etSearchEdit"
+            app:layout_constraintStart_toStartOf="@+id/etSearchEdit"
+            app:layout_constraintTop_toTopOf="@+id/etSearchEdit" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerEdit"
             android:layout_width="0sp"
             android:layout_height="0sp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/viewPSButtonBackground"
             app:layout_constraintStart_toStartOf="@+id/viewPSButtonBackground"
-            app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
+            app:layout_constraintTop_toBottomOf="@+id/etSearchEdit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
