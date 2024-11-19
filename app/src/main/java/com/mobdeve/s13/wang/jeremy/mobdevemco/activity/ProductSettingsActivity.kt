@@ -44,6 +44,8 @@ class ProductSettingsActivity : ComponentActivity() {
                 val selectedImageUri: Uri? = result.data?.data
                 selectedImageUri?.let {
                     base64 = uriToBase64(this, it)
+
+                    binding.ivPSImage.setImageURI(it)
                 }
             }
         }
@@ -54,6 +56,8 @@ class ProductSettingsActivity : ComponentActivity() {
                 val imageBitmap: Bitmap? = result.data?.extras?.get("data") as Bitmap?
                 imageBitmap?.let {
                     base64 = convertBitmapToBase64(it)
+
+                    binding.ivPSImage.setImageBitmap(it)
                 }
             }
         }
@@ -82,7 +86,11 @@ class ProductSettingsActivity : ComponentActivity() {
                             "Camera permission is permanently denied. Please enable it in app settings.",
                             Toast.LENGTH_LONG
                         ).show()
-                        openAppSettings()
+
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val uri = Uri.fromParts("package", packageName, null)
+                        intent.data = uri
+                        startActivity(intent)
                     }
                 }
             }
@@ -129,10 +137,6 @@ class ProductSettingsActivity : ComponentActivity() {
             finish()
         }
 
-
-
-
-
         binding.btnSaveProduct.setOnClickListener {
             val sku = binding.etPSProductSKU.text.toString().toLongOrNull() ?: 0
             val name = binding.etPSProductName.text.toString()
@@ -143,12 +147,6 @@ class ProductSettingsActivity : ComponentActivity() {
 
             // Call function to save product to Firebase
             saveItemToDatabase(item)
-
-            // Clear the input fields
-            binding.etPSProductSKU.text.clear()
-            binding.etPSProductName.text.clear()
-            binding.etPSQty.text.clear()
-            binding.etPSPrice.text.clear()
         }
 
         binding.btnPSAdd.setOnClickListener {
@@ -166,6 +164,7 @@ class ProductSettingsActivity : ComponentActivity() {
                         binding.etPSPrice,
                         binding.etPSQty,
                         binding.etPSImage,
+                        binding.ivPSImage,
                         binding.btnSaveProduct
                     ),
                     emptyList()
@@ -216,6 +215,7 @@ class ProductSettingsActivity : ComponentActivity() {
                                 binding.etPSPrice,
                                 binding.etPSQty,
                                 binding.etPSImage,
+                                binding.ivPSImage,
                                 binding.btnSaveProduct
                             )
                         )
@@ -259,6 +259,8 @@ class ProductSettingsActivity : ComponentActivity() {
                         toggleVisibility(
                             emptyList(),
                             listOf(
+                                binding.tvPSProductSKULabel,
+                                binding.etPSProductSKU,
                                 binding.tvPSProductNameLabel,
                                 binding.tvPSPriceLabel,
                                 binding.tvPSQtyLabel,
@@ -267,6 +269,7 @@ class ProductSettingsActivity : ComponentActivity() {
                                 binding.etPSPrice,
                                 binding.etPSQty,
                                 binding.etPSImage,
+                                binding.ivPSImage,
                                 binding.btnSaveProduct
                             )
                         )
@@ -304,6 +307,13 @@ class ProductSettingsActivity : ComponentActivity() {
                         ContentValues.TAG,
                         "DocumentSnapshot added with ID: ${documentReference.id}"
                     )
+
+                    // Clear the input fields
+                    binding.etPSProductSKU.text.clear()
+                    binding.etPSProductName.text.clear()
+                    binding.etPSQty.text.clear()
+                    binding.etPSPrice.text.clear()
+
                     Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
@@ -352,12 +362,5 @@ class ProductSettingsActivity : ComponentActivity() {
                 cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
         }
-    }
-
-    private fun openAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
-        startActivity(intent)
     }
 }
