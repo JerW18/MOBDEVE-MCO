@@ -284,12 +284,12 @@
 
         <TextView
             android:id="@+id/tvPSDateAndTime"
-            android:layout_width="130sp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"
             android:fontFamily="@font/inter"
-            android:text="Date and TImestamp"
+            android:text="Date and Timestamp"
             android:textColor="@color/gray"
             android:textSize="12sp"
             android:visibility="gone"
@@ -299,7 +299,7 @@
 
         <TextView
             android:id="@+id/tvPSInOut"
-            android:layout_width="36sp"
+            android:layout_width="40sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
@@ -314,7 +314,7 @@
 
         <TextView
             android:id="@+id/tvPSProduct"
-            android:layout_width="124sp"
+            android:layout_width="120sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"

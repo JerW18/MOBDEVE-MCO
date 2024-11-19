@@ -1,10 +1,12 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
+import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
@@ -13,19 +15,24 @@ import androidx.annotation.OptIn
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ScanBinding
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 
 class ScanActivity : ComponentActivity() {
     private lateinit var binding: ScanBinding
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var barcodeScanner: BarcodeScanner
+    private var rawValue: String = ""
 
     private var hasScanned = false // Flag to prevent further scanning
 
@@ -59,6 +66,13 @@ class ScanActivity : ComponentActivity() {
         }
         binding.ivScanAdd.setOnClickListener {
             binding.etScanQty.setText((binding.etScanQty.text.toString().toInt() + 1).toString())
+        }
+
+        binding.btnScanAddNew.setOnClickListener {
+            val intent = Intent(this, ProductSettingsActivity::class.java).apply {
+                putExtra("itemSKU", rawValue) // Pass the scanned barcode value
+            }
+            startActivity(intent)
         }
     }
 
@@ -146,9 +160,87 @@ class ScanActivity : ComponentActivity() {
     }
 
     private fun processBarcode(barcode: Barcode) {
-        val rawValue = barcode.rawValue
-        Toast.makeText(this, "Scanned barcode: $rawValue", Toast.LENGTH_SHORT).show()
-        // You can perform additional actions with the barcode data, like opening a URL or adding it to a list
+        rawValue = barcode.rawValue
+
+        if (rawValue != null) {
+            // Reference to Firestore
+            val firestore = FirebaseFirestore.getInstance()
+            val userUid = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (userUid != null) {
+                // Navigate to the user's items collection
+                firestore.collection("users") // Replace "users" if your collection name differs
+                    .document(userUid)
+                    .collection("items")
+                    .whereEqualTo("itemSKU", rawValue)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            // Item found
+                            val item = querySnapshot.documents[0].toObject(Item::class.java) // Replace `Item` with your data model class
+                            if (item != null) {
+                                toggleVisibility(
+                                    listOf(
+                                        binding.ivScanImage,
+                                        binding.tvScanProduct,
+                                        binding.etScanQty,
+                                        binding.ivScanAdd,
+                                        binding.ivScanMinus,
+                                        binding.tvScanPrice,
+                                        binding.tvScanStock,
+                                        binding.tvScanStockLabel,
+                                        binding.tvScanPesoLabel
+                                    ),
+                                    listOf(
+                                        binding.btnScanAddNew,
+                                        binding.tvScanAddNew
+                                    )
+                                )
+
+                                binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.imageUri))
+                                binding.tvScanProduct.text = item.name
+                                binding.tvScanPrice.text = item.price.toString()
+                                binding.tvScanStock.text = item.stock.toString()
+
+                            } else {
+                                Toast.makeText(this, "Item format error.", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            // Item not found
+                            toggleVisibility(
+                                listOf(
+                                    binding.btnScanAddNew,
+                                    binding.tvScanAddNew
+                                ),
+                                listOf(
+                                    binding.ivScanImage,
+                                    binding.tvScanProduct,
+                                    binding.etScanQty,
+                                    binding.ivScanAdd,
+                                    binding.ivScanMinus,
+                                    binding.tvScanPrice,
+                                    binding.tvScanStock,
+                                    binding.tvScanStockLabel,
+                                    binding.tvScanPesoLabel
+                                )
+                            )
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        // Handle error
+                        Toast.makeText(this, "Error fetching item: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Invalid barcode scanned.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun toggleVisibility(visibleViews: List<View>, goneViews: List<View>) {
+        visibleViews.forEach { it.visibility = View.VISIBLE }
+        goneViews.forEach { it.visibility = View.GONE }
     }
 
     override fun onDestroy() {

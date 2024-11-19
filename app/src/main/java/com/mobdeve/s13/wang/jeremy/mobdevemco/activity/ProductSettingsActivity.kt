@@ -100,6 +100,12 @@ class ProductSettingsActivity : ComponentActivity() {
             numList.add(1)
         }
         binding = ProductSettingBinding.inflate(layoutInflater)
+
+        val itemSKU = intent.getStringExtra("itemSKU")
+        if (itemSKU != null) {
+            binding.etPSProductSKU.setText(itemSKU)
+        }
+
         initUI()
         setContentView(binding.root)
     }
@@ -109,7 +115,7 @@ class ProductSettingsActivity : ComponentActivity() {
         button.setTextColor(
             ContextCompat.getColor(
                 this,
-                if (isActive) R.color.white else R.color.black
+                if (isActive) R.color.white else R.color.green
             )
         )
     }
@@ -138,7 +144,7 @@ class ProductSettingsActivity : ComponentActivity() {
         }
 
         binding.btnSaveProduct.setOnClickListener {
-            val sku = binding.etPSProductSKU.text.toString().toLongOrNull() ?: 0
+            val sku = binding.etPSProductSKU.text.toString()
             val name = binding.etPSProductName.text.toString()
             val quantity = binding.etPSQty.text.toString().toIntOrNull() ?: 0
             val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
@@ -313,6 +319,7 @@ class ProductSettingsActivity : ComponentActivity() {
                     binding.etPSProductName.text.clear()
                     binding.etPSQty.text.clear()
                     binding.etPSPrice.text.clear()
+                    binding.ivPSImage.setImageResource(R.drawable.default_product)
 
                     Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
                 }
