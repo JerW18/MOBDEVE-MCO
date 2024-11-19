@@ -2,6 +2,7 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.content.ContentValues
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -22,9 +23,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.Item.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
 class HomeActivity : ComponentActivity() {
     private lateinit var binding: HomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = HomeBinding.inflate(layoutInflater)
@@ -39,7 +42,6 @@ class HomeActivity : ComponentActivity() {
         super.onResume()
         binding.recyclerHome.adapter?.notifyDataSetChanged()
     }
-
 
     private suspend fun getItem() {
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -80,14 +82,26 @@ class HomeActivity : ComponentActivity() {
         val endIndex = startIndex + 2
         val colorSpan = ForegroundColorSpan(ContextCompat.getColor(this, R.color.dark_green))
         spannableString.setSpan(colorSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val sharedPreferences = getSharedPreferences("item_preferences", MODE_PRIVATE)
 
         binding.tvAppName.text = spannableString
         binding.btnReview.isAllCaps = false
         binding.recyclerHome.layoutManager = GridLayoutManager(this, 2)
-        binding.recyclerHome.adapter = HomeAdapter(itemList)
+        binding.recyclerHome.adapter = HomeAdapter(itemList, this)
 
         binding.btnReview.setOnClickListener {
+            val itemListWithQuantity = mutableListOf<ItemWithQuantity>()
+
+            for (item in itemList) {
+                val savedQty = sharedPreferences.getInt("qty_${item.itemSKU}", 0)
+
+                itemListWithQuantity.add(ItemWithQuantity(item, savedQty))
+            }
+
             val intent = Intent(this, PullOutActivity::class.java)
+
+            intent.putParcelableArrayListExtra("item_list", ArrayList(itemListWithQuantity))
+
             startActivity(intent)
         }
 
@@ -106,5 +120,4 @@ class HomeActivity : ComponentActivity() {
         }
 
     }
-
 }
