@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="352sp"
+        android:layout_height="44sp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/active_button"
+        android:fontFamily="@font/inter_bold"
+        android:text="Log Out"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/tnDelete"
+        android:layout_width="352sp"
+        android:layout_height="44sp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/delete_button"
+        android:fontFamily="@font/inter_bold"
+        android:text="Delete Account"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/viewAcctGreenHeader"
+        android:layout_width="match_parent"
+        android:layout_height="75sp"
+        android:background="@color/green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivAcctBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/back_button"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAcctTitle"
+        app:layout_constraintStart_toStartOf="@+id/viewAcctGreenHeader"
+        app:layout_constraintTop_toTopOf="@+id/tvAcctTitle" />
+
+    <TextView
+        android:id="@+id/tvAcctTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Account Setting"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewAcctGreenHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/viewAcctGreenHeader"
+        app:layout_constraintTop_toTopOf="@+id/viewAcctGreenHeader" />
+
+    <ImageView
+        android:id="@+id/ivProfpic"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="-16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tnDelete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewAcctGreenHeader"
+        android:src="@drawable/profile_pic" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="email"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/ivProfpic"
+        app:layout_constraintStart_toStartOf="@+id/ivProfpic"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfpic" />
+</androidx.constraintlayout.widget.ConstraintLayout>

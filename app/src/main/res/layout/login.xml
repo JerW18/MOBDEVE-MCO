@@ -186,7 +186,7 @@
 
     <Button
         android:id="@+id/btnSubmit"
-        android:layout_width="352sp"
+        android:layout_width="0dp"
         android:layout_height="44sp"
         android:layout_marginTop="36dp"
         android:background="@drawable/active_button"
@@ -194,9 +194,8 @@
         android:text="Log In"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.474"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etConfirmPassword"
+        app:layout_constraintStart_toStartOf="@+id/etConfirmPassword"
         app:layout_constraintTop_toBottomOf="@+id/etConfirmPassword" />
 
     <ImageView

@@ -110,6 +110,12 @@ class HomeActivity : ComponentActivity() {
             val intent = Intent(this, NotifActivity::class.java)
             startActivity(intent)
         }
+
+        binding.ivAcc.setOnClickListener {
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.ivSetting.setOnClickListener {
             val intent = Intent(this, ProductSettingsActivity::class.java)
             startActivity(intent)
