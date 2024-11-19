@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/viewPSGreenHeader"
+            android:layout_width="match_parent"
+            android:layout_height="75sp"
+            android:background="@color/green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivPSBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/back_button"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPSGreenHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewPSGreenHeader" />
+
+        <TextView
+            android:id="@+id/tvPSTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
+            android:text="Edit Settings"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPSBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/viewPSGreenHeader"
+            app:layout_constraintTop_toTopOf="@+id/ivPSBack" />
+
+        <TextView
+            android:id="@+id/tvPSProductSKULabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Product SKU"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/etPSProductSKU"
+            app:layout_constraintTop_toBottomOf="@+id/viewPSGreenHeader" />
+
+        <EditText
+            android:id="@+id/etPSProductSKU"
+            android:layout_width="352dp"
+            android:layout_height="64dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/inter_medium"
+            android:hint="Product SKU"
+            android:inputType="text"
+            android:padding="12sp"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPSProductSKULabel" />
+
+        <EditText
+            android:id="@+id/etPSProductName"
+            android:layout_width="352sp"
+            android:layout_height="56sp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/inter_medium"
+            android:hint="Product Name"
+            android:inputType="text"
+            android:padding="12sp"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/etPSProductSKU"
+            app:layout_constraintStart_toStartOf="@+id/tvPSProductNameLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tvPSProductNameLabel" />
+
+        <TextView
+            android:id="@+id/tvPSProductNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Product Name"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/etPSProductSKU"
+            app:layout_constraintTop_toBottomOf="@+id/etPSProductSKU" />
+
+        <TextView
+            android:id="@+id/tvPSQtyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Quantity"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/etPSProductName"
+            app:layout_constraintTop_toBottomOf="@+id/etPSProductName" />
+
+        <EditText
+            android:id="@+id/etPSQty"
+            android:layout_width="352sp"
+            android:layout_height="56sp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/inter_medium"
+            android:hint="Quantitiy"
+            android:inputType="text"
+            android:padding="12sp"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/tvPSQtyLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tvPSQtyLabel" />
+
+        <TextView
+            android:id="@+id/tvPSPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Price"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/etPSQty"
+            app:layout_constraintTop_toBottomOf="@+id/etPSQty" />
+
+        <EditText
+            android:id="@+id/etPSPrice"
+            android:layout_width="352sp"
+            android:layout_height="56sp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/inter_medium"
+            android:hint="Price"
+            android:inputType="text"
+            android:padding="12sp"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/tvPSPriceLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tvPSPriceLabel" />
+
+        <TextView
+            android:id="@+id/tvPSImageLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/inter_medium"
+            android:text="Image"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/etPSPrice"
+            app:layout_constraintTop_toBottomOf="@+id/etPSPrice" />
+
+        <Button
+            android:id="@+id/etPSImage"
+            android:layout_width="352sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/input_field"
+            android:fontFamily="@font/inter_medium"
+            android:gravity="start|center_vertical"
+            android:hint="+ Attach Image"
+            android:inputType="text"
+            android:padding="12sp"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/etPSPrice"
+            app:layout_constraintTop_toBottomOf="@+id/ivPSImage" />
+
+        <ImageView
+            android:id="@+id/ivPSImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/default_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPSImageLabel"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.5" />
+
+        <Button
+            android:id="@+id/btnSaveProduct"
+            android:layout_width="352sp"
+            android:layout_height="56sp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/active_button"
+            android:fontFamily="@font/inter_bold"
+            android:text="Save Product"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/etPSImage"
+            app:layout_constraintStart_toStartOf="@+id/etPSImage"
+            app:layout_constraintTop_toBottomOf="@+id/etPSImage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
