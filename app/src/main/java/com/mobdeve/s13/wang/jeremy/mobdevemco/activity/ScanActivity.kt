@@ -56,6 +56,9 @@ class ScanActivity : ComponentActivity() {
         binding.btnScanPullOut.setOnClickListener {
             finish()
         }
+        binding.ivScanBack.setOnClickListener {
+            finish()
+        }
 
         binding.ivScanMinus.setOnClickListener {
             if (binding.etScanQty.text.toString().toInt() > 1) {
