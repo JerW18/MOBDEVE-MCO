@@ -22,22 +22,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".60" />
+        app:layout_constraintGuide_end="103dp" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ivItemImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"
-            app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
-            app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
-            app:layout_constraintTop_toTopOf="@+id/ivItemBorder"
-            tools:srcCompat="@tools:sample/avatars"
-            app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivItemImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="@+id/ivItemBorder"
+        app:layout_constraintStart_toStartOf="@+id/ivItemBorder"
+        app:layout_constraintTop_toTopOf="@+id/ivItemBorder"
+        app:shapeAppearanceOverlay="@style/RoundedCornerImage"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvItemProduct"

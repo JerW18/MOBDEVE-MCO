@@ -12,7 +12,6 @@
         android:background="@color/green"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -83,7 +82,7 @@
         android:id="@+id/etSearch"
         android:layout_width="0sp"
         android:layout_height="52sp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="-26dp"
         android:background="@drawable/input_field"
         android:ems="10"
@@ -110,10 +109,10 @@
 
     <ImageView
         android:id="@+id/ivScan"
-        android:layout_width="47sp"
+        android:layout_width="52sp"
         android:layout_height="52sp"
         android:layout_marginTop="-26dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/scan_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -136,21 +135,19 @@
         android:text="No items selected"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvTotal"
         app:layout_constraintStart_toStartOf="@+id/ivCart"
-        app:layout_constraintTop_toTopOf="@+id/ivCart" />
+        app:layout_constraintTop_toTopOf="@+id/btnReview" />
 
     <TextView
         android:id="@+id/tvTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:fontFamily="@font/inter_semibold"
         android:text="Total: "
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivCart"
-        app:layout_constraintStart_toStartOf="@+id/ivCart"
+        app:layout_constraintBottom_toBottomOf="@+id/btnReview"
+        app:layout_constraintStart_toStartOf="@+id/tvNumItemSelected"
         app:layout_constraintTop_toBottomOf="@+id/tvNumItemSelected" />
 
     <TextView
@@ -161,9 +158,9 @@
         android:text="₱ 0.00"
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivCart"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTotal"
         app:layout_constraintStart_toEndOf="@+id/tvTotal"
-        app:layout_constraintTop_toBottomOf="@+id/tvNumItemSelected" />
+        app:layout_constraintTop_toTopOf="@+id/tvTotal" />
 
     <Button
         android:id="@+id/btnReview"
@@ -172,7 +169,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/active_button"
         android:fontFamily="@font/inter_semibold"
-        android:text="Cart →"
+        android:text="CART"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivCart"

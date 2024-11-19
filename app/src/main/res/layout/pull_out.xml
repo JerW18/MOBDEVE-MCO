@@ -92,8 +92,8 @@
 
     <Button
         android:id="@+id/btnPullOut"
-        android:layout_width="140sp"
-        android:layout_height="60sp"
+        android:layout_width="120sp"
+        android:layout_height="50sp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/active_button"
         android:fontFamily="@font/inter_semibold"
