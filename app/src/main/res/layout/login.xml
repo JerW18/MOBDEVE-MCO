@@ -91,10 +91,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/inter_medium"
-        android:text="Username"
+        android:text="Email"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/viewButtonBackground"
+        app:layout_constraintStart_toStartOf="@+id/viewButtonBackground"
         app:layout_constraintTop_toBottomOf="@+id/viewButtonBackground" />
 
     <EditText
@@ -104,14 +104,14 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/input_field"
         android:fontFamily="@font/inter_medium"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="text"
         android:padding="12sp"
         android:paddingEnd="52sp"
         android:textColor="@color/gray"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvUsernameLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvUsernameLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvUsernameLabel" />
 
     <TextView
@@ -163,8 +163,8 @@
         android:fontFamily="@font/inter_medium"
         android:text="Password"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/etUsername"
+        app:layout_constraintStart_toStartOf="@+id/etUsername"
         app:layout_constraintTop_toBottomOf="@+id/etUsername" />
 
     <EditText
@@ -180,8 +180,8 @@
         android:paddingEnd="52sp"
         android:textColor="@color/gray"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvConfirmPasswordLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvConfirmPasswordLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvPasswordLabel" />
 
     <Button
