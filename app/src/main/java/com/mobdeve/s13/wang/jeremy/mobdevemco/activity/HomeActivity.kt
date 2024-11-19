@@ -1,6 +1,7 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -22,14 +23,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import com.mobdeve.s13.wang.jeremy.mobdevemco.list.Item.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
 class HomeActivity : ComponentActivity() {
     private lateinit var binding: HomeBinding
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
         binding = HomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         CoroutineScope(Dispatchers.Main).launch {
@@ -59,6 +64,13 @@ class HomeActivity : ComponentActivity() {
                     val items = querySnapshot.toObjects(Item::class.java)
                     for (item in items) {
                         itemList.add(item)
+                        val key = "qty_${item.itemSKU}"
+                        itemWithQuantityList.add(
+                            ItemWithQuantity(
+                                item,
+                                sharedPreferences.getInt(key, 0)
+                            )
+                        )
                         Log.d(
                             ContentValues.TAG,
                             "Item: ${item.name}, SKU: ${item.itemSKU}, Image URL: ${item.imageUri}"
@@ -90,18 +102,7 @@ class HomeActivity : ComponentActivity() {
         binding.recyclerHome.adapter = HomeAdapter(itemList, this)
 
         binding.btnReview.setOnClickListener {
-            val itemListWithQuantity = mutableListOf<ItemWithQuantity>()
-
-            for (item in itemList) {
-                val savedQty = sharedPreferences.getInt("qty_${item.itemSKU}", 0)
-
-                itemListWithQuantity.add(ItemWithQuantity(item, savedQty))
-            }
-
             val intent = Intent(this, PullOutActivity::class.java)
-
-            intent.putParcelableArrayListExtra("item_list", ArrayList(itemListWithQuantity))
-
             startActivity(intent)
         }
 

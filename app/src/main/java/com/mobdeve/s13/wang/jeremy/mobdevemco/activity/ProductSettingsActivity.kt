@@ -29,7 +29,7 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ProductSettingBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.convertBitmapToBase64
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.uriToBase64
-import com.mobdeve.s13.wang.jeremy.mobdevemco.list.Item.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 
 class ProductSettingsActivity : ComponentActivity() {
     private lateinit var binding: ProductSettingBinding

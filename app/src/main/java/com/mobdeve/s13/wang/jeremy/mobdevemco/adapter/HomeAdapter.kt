@@ -2,12 +2,14 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.HomeItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
 class HomeAdapter(private val items: List<Item>, private val context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -32,6 +34,7 @@ class HomeAdapter(private val items: List<Item>, private val context: Context) :
                 val newQty = currentQty + 1
                 binding.etItemQty.setText(newQty.toString())
                 sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
+                itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
             }
 
             // Subtract item logic
@@ -41,6 +44,7 @@ class HomeAdapter(private val items: List<Item>, private val context: Context) :
                     val newQty = currentQty - 1
                     binding.etItemQty.setText(newQty.toString())
                     sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
+                    itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
                 }
             }
         }
