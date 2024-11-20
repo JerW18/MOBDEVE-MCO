@@ -10,6 +10,7 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
@@ -28,7 +29,7 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
-class HomeActivity : ComponentActivity() {
+class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     private lateinit var binding: HomeBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var filteredList = mutableListOf<Item>()
@@ -43,13 +44,19 @@ class HomeActivity : ComponentActivity() {
             getItem()
             filteredList = itemList.toMutableList()
             initUI()
+            binding.tvNumItemSelected.text = "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
+            binding.tvTotalSum.text = "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
         }
+    }
+
+    override fun onItemSelectionChanged(selectedItemCount: Int, totalPrice: Double) {
+        binding.tvNumItemSelected.text = "$selectedItemCount items selected"
+        binding.tvTotalSum.text = "₱ $totalPrice"
     }
 
     override fun onResume() {
         super.onResume()
         searchProduct()
-        // check if user is still authenticated if not redirect to loginactivity and finish the current activity
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
             val intent = Intent(this, LoginActivity::class.java)
@@ -110,7 +117,7 @@ class HomeActivity : ComponentActivity() {
         binding.tvAppName.text = spannableString
         binding.btnReview.isAllCaps = false
         binding.recyclerHome.layoutManager = GridLayoutManager(this, 2)
-        binding.recyclerHome.adapter = HomeAdapter(filteredList, this)
+        binding.recyclerHome.adapter = HomeAdapter(filteredList, this, this)
 
         binding.btnReview.setOnClickListener {
             val intent = Intent(this, PullOutActivity::class.java)

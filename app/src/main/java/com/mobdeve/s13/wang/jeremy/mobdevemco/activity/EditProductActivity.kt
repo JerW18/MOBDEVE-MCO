@@ -82,13 +82,13 @@ class EditProductActivity: ComponentActivity() {
         binding.btnSaveProduct.setOnClickListener {
             itemList.find { it.itemSKU == itemSKU }?.let {
                 it.name = binding.etPSProductName.text.toString()
-                it.price = binding.etPSPrice.text.toString().toFloat()
+                it.price = binding.etPSPrice.text.toString().toDouble()
                 it.stock = binding.etPSQty.text.toString().toInt()
                 it.imageUri = base64
             }
             itemWithQuantityList.find { it.item.itemSKU == itemSKU }?.let {
                 it.item.name = binding.etPSProductName.text.toString()
-                it.item.price = binding.etPSPrice.text.toString().toFloat()
+                it.item.price = binding.etPSPrice.text.toString().toDouble()
                 it.item.stock = binding.etPSQty.text.toString().toInt()
                 it.item.imageUri = base64
             }

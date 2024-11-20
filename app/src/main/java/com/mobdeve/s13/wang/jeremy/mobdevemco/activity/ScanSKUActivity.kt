@@ -152,8 +152,10 @@ class ScanSKUActivity : ComponentActivity() {
                     .whereEqualTo("itemSKU", rawValue)
                     .get()
                     .addOnSuccessListener { querySnapshot ->
-                        //print you scanned:
-                        Toast.makeText(this, "Scanned: $rawValue", Toast.LENGTH_SHORT).show()
+                        val intent = Intent()
+                        intent.putExtra("barcode", rawValue)
+                        setResult(RESULT_OK, intent)
+                        finish()
                     }
                     .addOnFailureListener { e ->
                         // Handle error

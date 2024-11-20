@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.HomeAdapter.ItemSelectionListener
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.PullOutItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
@@ -13,12 +14,13 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
 class PullOutAdapter(
     private val items: MutableList<ItemWithQuantity>,
-    private val context: Context
+    private val context: Context,
+    private val itemSelectionListener: ItemSelectionListener
 ) : RecyclerView.Adapter<PullOutAdapter.ViewHolder>() {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
 
-    class ViewHolder(private val binding: PullOutItemBinding) :
+    class ViewHolder(private val binding: PullOutItemBinding, private val itemSelectionListener: ItemSelectionListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(
@@ -43,10 +45,10 @@ class PullOutAdapter(
             }
 
             binding.ivPullOutMinus.setOnClickListener {
-                if (item.quantity > 1) { // Prevent quantity from going below 1
+                if (item.quantity > 1) {
                     item.quantity -= 1
                     binding.evPullOutQty.setText(item.quantity.toString())
-                    onQuantityChanged(item)  // Notify the adapter of the quantity change
+                    onQuantityChanged(item)
                 } else if (item.quantity == 1) {
                     item.quantity -= 1
                     binding.evPullOutQty.setText(item.quantity.toString())
@@ -74,16 +76,28 @@ class PullOutAdapter(
                     }
                     sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
                     itemWithQuantityList.find { it.item.itemSKU == item.item.itemSKU }?.quantity = newQty
+
+                    updateItemSelection()
                 }
             })
 
         }
+
+        private fun updateItemSelection() {
+            val totalPrice = itemWithQuantityList.sumOf { it.item.price * it.quantity.toDouble() }
+
+            itemSelectionListener.onItemSelectionChanged(totalPrice)
+        }
+    }
+
+    interface ItemSelectionListener {
+        fun onItemSelectionChanged(totalPrice: Double)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = PullOutItemBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, itemSelectionListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

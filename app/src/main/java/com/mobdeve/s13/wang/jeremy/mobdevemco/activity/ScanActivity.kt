@@ -26,6 +26,8 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
 class ScanActivity : ComponentActivity() {
     private lateinit var binding: ScanBinding
@@ -48,11 +50,62 @@ class ScanActivity : ComponentActivity() {
 
     private fun initUI() {
         binding.btnScanPullOut.isAllCaps = false
-        binding.btnScanAgain.isAllCaps = false
+        binding.btnRestock.isAllCaps = false
 
-        binding.btnScanAgain.setOnClickListener {
-            hasScanned = false
+        binding.btnRestock.setOnClickListener {
+            val firestore = FirebaseFirestore.getInstance()
+            val userUid = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (userUid != null) {
+                firestore.collection("users")
+                    .document(userUid)
+                    .collection("items")
+                    .whereEqualTo("itemSKU", rawValue)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        if (!querySnapshot.isEmpty) {
+                            val item = querySnapshot.documents[0].toObject(Item::class.java)
+                            if (item != null) {
+                                val newStock = item.stock + binding.etScanQty.text.toString().toInt()
+                                firestore.collection("users")
+                                    .document(userUid)
+                                    .collection("items")
+                                    .document(querySnapshot.documents[0].id)
+                                    .update("stock", newStock)
+                                    .addOnSuccessListener {
+                                        //update all associated views
+                                        binding.tvScanStock.text = newStock.toString()
+                                        itemList.forEach { item ->
+                                            if (item.itemSKU == rawValue) {
+                                                item.stock = newStock
+                                            }
+                                        }
+                                        itemWithQuantityList.forEach { item ->
+                                            if (item.item.itemSKU == rawValue) {
+                                                item.item.stock = newStock
+                                            }
+                                        }
+                                        Toast.makeText(this, "Stock updated.", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error updating stock: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                Toast.makeText(this, "Item format error.", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(this, "Item not found.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error fetching item: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
+            }
+
         }
+
         binding.btnScanPullOut.setOnClickListener {
             finish()
         }

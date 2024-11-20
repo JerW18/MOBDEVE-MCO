@@ -69,6 +69,15 @@ class ProductSettingsActivity : ComponentActivity() {
             }
         }
 
+    private val barcodeResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val barcode = result.data?.getStringExtra("barcode")
+            barcode?.let {
+                binding.etPSProductSKU.setText(it)
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         binding.recyclerEdit.adapter?.notifyDataSetChanged()
@@ -162,7 +171,7 @@ class ProductSettingsActivity : ComponentActivity() {
             val quantity = binding.etPSQty.text.toString().toIntOrNull() ?: 0
             val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
 
-            val item = Item(sku, base64, name, price.toFloat(), quantity)
+            val item = Item(sku, base64, name, price.toDouble(), quantity)
 
             itemWithQuantityList.add(ItemWithQuantity(item, 0))
 
@@ -220,7 +229,7 @@ class ProductSettingsActivity : ComponentActivity() {
 
         binding.btnScanSKU.setOnClickListener {
             val intent = Intent(this, ScanSKUActivity::class.java)
-            startActivity(intent)
+            barcodeResultLauncher.launch(intent)
         }
 
         binding.btnPSEdit.setOnClickListener {
@@ -377,7 +386,6 @@ class ProductSettingsActivity : ComponentActivity() {
         dialog.show()
     }
 
-
     private fun saveItemToDatabase(item: Item) {
         val database = FirebaseFirestore.getInstance()
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -388,13 +396,17 @@ class ProductSettingsActivity : ComponentActivity() {
                 .document(userId)  // Reference to the user's document
                 .collection("items")  // Subcollection to store items
 
+            // if sku already exists, throw error
+            for (i in itemList) {
+                if (i.itemSKU == item.itemSKU) {
+                    Toast.makeText(this, "Product SKU already exists", Toast.LENGTH_SHORT).show()
+                    return
+                }
+            }
+
             itemsRef.add(item)
                 .addOnSuccessListener { documentReference ->
                     itemList.add(item)
-                    Log.d(
-                        ContentValues.TAG,
-                        "DocumentSnapshot added with ID: ${documentReference.id}"
-                    )
 
                     // Clear the input fields
                     binding.etPSProductSKU.text.clear()

@@ -3,19 +3,21 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.HomeBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.HomeItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
-class HomeAdapter(private val items: List<Item>, private val context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(private val items: List<Item>, private val context: Context, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
 
-    class ViewHolder(private val binding: HomeItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: HomeItemBinding, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item, sharedPreferences: SharedPreferences) {
             val key = "qty_${item.itemSKU}"
@@ -63,16 +65,28 @@ class HomeAdapter(private val items: List<Item>, private val context: Context) :
                     }
                     sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
                     itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
+                    updateItemSelection()
                 }
             })
         }
+
+        private fun updateItemSelection() {
+            val selectedCount = itemWithQuantityList.filter { it.quantity > 0 }.size
+            val totalPrice = itemWithQuantityList.sumOf { it.item.price * it.quantity.toDouble() }
+
+            itemSelectionListener.onItemSelectionChanged(selectedCount, totalPrice)
+        }
+    }
+
+    interface ItemSelectionListener {
+        fun onItemSelectionChanged(selectedItemCount: Int, totalPrice: Double)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = HomeItemBinding.inflate(inflater, parent, false)
 
-        return ViewHolder(binding)
+        return ViewHolder(binding, itemSelectionListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
