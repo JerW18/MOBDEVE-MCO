@@ -2,6 +2,7 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,8 +34,6 @@ class HomeAdapter(private val items: List<Item>, private val context: Context) :
                 if (currentQty < item.stock) {
                     val newQty = currentQty + 1
                     binding.etItemQty.setText(newQty.toString())
-                    sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
-                    itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
                 }
             }
 
@@ -44,10 +43,28 @@ class HomeAdapter(private val items: List<Item>, private val context: Context) :
                 if (currentQty > 0) {
                     val newQty = currentQty - 1
                     binding.etItemQty.setText(newQty.toString())
+                }
+            }
+
+            binding.etItemQty.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
+
+                override fun afterTextChanged(s: android.text.Editable?) {
+                    if (binding.etItemQty.text.toString().isEmpty()) {
+                        return
+                    }
+                    val newQty = binding.etItemQty.text.toString().toInt()
+                    if (newQty > item.stock) {
+                        binding.etItemQty.setText(item.stock.toString())
+                    }
                     sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
                     itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
                 }
-            }
+            })
         }
     }
 
