@@ -20,7 +20,7 @@
         android:id="@+id/ivPullOutImage"
         android:layout_width="100sp"
         android:layout_height="100sp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/ivPullOutBorder"
         app:layout_constraintStart_toStartOf="@+id/ivPullOutBorder"
