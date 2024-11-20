@@ -24,12 +24,10 @@ class AccountActivity : ComponentActivity() {
     }
 
     private fun initUI() {
-        // Handle back button
         binding.ivAcctBack.setOnClickListener {
             finish()
         }
 
-        // Handle logout button
         binding.btnLogout.setOnClickListener {
             showLogoutConfirmationDialog()
         }
@@ -37,6 +35,8 @@ class AccountActivity : ComponentActivity() {
         binding.btnDelete.setOnClickListener {
             showDeleteConfirmationDialog()
         }
+
+        binding.tvAccEmail.text = FirebaseAuth.getInstance().currentUser?.email
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -135,7 +135,6 @@ class AccountActivity : ComponentActivity() {
             Toast.makeText(this, "No user is currently signed in", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun deleteUserDataFromFirestore(userId: String, onComplete: (Boolean) -> Unit) {
         val db = FirebaseFirestore.getInstance()

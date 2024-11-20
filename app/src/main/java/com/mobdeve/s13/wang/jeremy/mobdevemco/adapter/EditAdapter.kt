@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.activity.EditProductActivity
-import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.AcctDeletionConfirmationBinding
+import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ProductDeletionConfirmationBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.EditItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
@@ -39,6 +39,25 @@ class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<E
                 startActivity(binding.root.context, intent, null)
             }
             binding.tvPSDelete.setOnClickListener {
+                showDeleteConfirmationDialog(item, items, adapter, binding)
+            }
+
+        }
+
+        private fun showDeleteConfirmationDialog(item: Item, items: MutableList<Item>, adapter: EditAdapter, binding: EditItemBinding) {
+            val dialogBinding = ProductDeletionConfirmationBinding.inflate(LayoutInflater.from(binding.root.context))
+
+            val dialog = Dialog(binding.root.context)
+            dialog.setContentView(dialogBinding.root)
+
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+            dialogBinding.btnProductDeletionCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialogBinding.btnProductDeletionConfirm.setOnClickListener {
+                dialog.dismiss()
                 itemList.remove(item)
                 items.remove(item)
                 itemWithQuantityList.remove(itemWithQuantityList.find { it.item.itemSKU == item.itemSKU })
@@ -47,6 +66,7 @@ class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<E
                 deleteItem(item)
             }
 
+            dialog.show()
         }
 
         private fun deleteItem(item: Item) {

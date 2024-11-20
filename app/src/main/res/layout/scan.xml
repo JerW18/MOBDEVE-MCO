@@ -165,7 +165,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <Button
-        android:id="@+id/btnScanAgain"
+        android:id="@+id/btnRestock"
         android:layout_width="140sp"
         android:layout_height="60sp"
         android:background="@drawable/inactive_button"
