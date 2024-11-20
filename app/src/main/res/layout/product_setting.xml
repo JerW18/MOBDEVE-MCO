@@ -130,18 +130,38 @@
                     android:textSize="14sp"
                     android:visibility="visible" />
 
-                <EditText
-                    android:id="@+id/etPSProductSKU"
-                    android:layout_width="352sp"
-                    android:layout_height="56sp"
-                    android:background="@drawable/input_field"
-                    android:fontFamily="@font/inter_medium"
-                    android:hint="Product SKU"
-                    android:inputType="text"
-                    android:padding="12sp"
-                    android:textColor="@color/gray"
-                    android:textSize="14sp"
-                    android:visibility="visible" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/etPSProductSKU"
+                        android:layout_width="352sp"
+                        android:layout_height="56sp"
+                        android:background="@drawable/input_field"
+                        android:fontFamily="@font/inter_medium"
+                        android:hint="Product SKU"
+                        android:inputType="text"
+                        android:padding="12sp"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/btnScanSKU"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:background="@android:color/transparent"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@+id/etPSProductSKU"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/etPSProductSKU"
+                        android:src="@drawable/baseline_qr_code_scanner_24"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/tvPSProductNameLabel"
@@ -263,6 +283,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:visibility="visible" />
+
             </LinearLayout>
         </ScrollView>
 
