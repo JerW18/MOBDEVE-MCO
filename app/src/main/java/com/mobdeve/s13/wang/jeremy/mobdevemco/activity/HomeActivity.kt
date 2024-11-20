@@ -60,6 +60,7 @@ class HomeActivity : ComponentActivity() {
 
     private suspend fun getItem() {
         itemList.clear()
+        itemWithQuantityList.clear()
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val userId = currentUser.uid

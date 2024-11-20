@@ -28,6 +28,7 @@ class PullOutActivity : ComponentActivity() {
             finish()
         }
         binding.recyclerPullOut.layoutManager = LinearLayoutManager(this)
-        binding.recyclerPullOut.adapter = PullOutAdapter(itemWithQuantityList, this)
+        val filteredList = itemWithQuantityList.filter { it.quantity > 0 }.toMutableList()
+        binding.recyclerPullOut.adapter = PullOutAdapter(filteredList, this)
     }
 }
