@@ -190,13 +190,13 @@
 
         <ImageView
             android:id="@+id/ivPSImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="200sp"
+            android:layout_height="200sp"
             android:src="@drawable/default_product"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPSImageLabel"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent="0.5" />
 

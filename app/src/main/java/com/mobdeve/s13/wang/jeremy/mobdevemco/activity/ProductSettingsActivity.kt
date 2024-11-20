@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,8 +41,8 @@ class ProductSettingsActivity : ComponentActivity() {
     private lateinit var binding: ProductSettingBinding
     private val numList = mutableListOf<Int>()
     private var state = "ADD"
-    private lateinit var base64: String;
-
+    private var base64: String = "";
+    private var filteredList = itemList.toMutableList()
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private val galleryResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -67,6 +68,11 @@ class ProductSettingsActivity : ComponentActivity() {
             }
         }
 
+    override fun onResume() {
+        super.onResume()
+        binding.recyclerEdit.adapter?.notifyDataSetChanged()
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         cameraPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -143,7 +149,7 @@ class ProductSettingsActivity : ComponentActivity() {
         binding.recyclerLogs.addItemDecoration(dividerItemDecoration)
 
         binding.recyclerEdit.layoutManager = LinearLayoutManager(this)
-        binding.recyclerEdit.adapter = EditAdapter(itemList)
+        binding.recyclerEdit.adapter = EditAdapter(filteredList)
 
         binding.ivPSBack.setOnClickListener {
             finish()
@@ -313,6 +319,29 @@ class ProductSettingsActivity : ComponentActivity() {
         binding.btnLogsFilter.setOnClickListener {
             showLogsFilterDialog()
         }
+
+        binding.etSearchEdit.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                searchProduct()
+            }
+        })
+    }
+
+    private fun searchProduct() {
+        val searchQuery = binding.etSearchEdit.text.toString().lowercase()
+        filteredList.clear()
+        filteredList.addAll(
+            itemList.filter {
+                it.name.lowercase().contains(searchQuery)
+            }
+        )
+        binding.recyclerEdit.adapter!!.notifyDataSetChanged()
     }
 
     private fun showLogsFilterDialog() {
@@ -365,6 +394,7 @@ class ProductSettingsActivity : ComponentActivity() {
                     binding.ivPSImage.setImageResource(R.drawable.default_product)
 
                     Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
+                    searchProduct()
                 }
                 .addOnFailureListener { e ->
                     Log.w(ContentValues.TAG, "Error adding document", e)

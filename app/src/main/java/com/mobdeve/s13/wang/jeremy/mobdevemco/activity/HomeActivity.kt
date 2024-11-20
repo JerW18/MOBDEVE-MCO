@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.widget.Toast
@@ -30,6 +31,7 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 class HomeActivity : ComponentActivity() {
     private lateinit var binding: HomeBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private var filteredList = mutableListOf<Item>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +41,14 @@ class HomeActivity : ComponentActivity() {
         setContentView(binding.root)
         CoroutineScope(Dispatchers.Main).launch {
             getItem()
+            filteredList = itemList.toMutableList()
             initUI()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        binding.recyclerHome.adapter?.notifyDataSetChanged()
+        searchProduct()
         // check if user is still authenticated if not redirect to loginactivity and finish the current activity
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
@@ -102,12 +105,11 @@ class HomeActivity : ComponentActivity() {
         val endIndex = startIndex + 2
         val colorSpan = ForegroundColorSpan(ContextCompat.getColor(this, R.color.dark_green))
         spannableString.setSpan(colorSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        val sharedPreferences = getSharedPreferences("item_preferences", MODE_PRIVATE)
 
         binding.tvAppName.text = spannableString
         binding.btnReview.isAllCaps = false
         binding.recyclerHome.layoutManager = GridLayoutManager(this, 2)
-        binding.recyclerHome.adapter = HomeAdapter(itemList, this)
+        binding.recyclerHome.adapter = HomeAdapter(filteredList, this)
 
         binding.btnReview.setOnClickListener {
             val intent = Intent(this, PullOutActivity::class.java)
@@ -134,5 +136,28 @@ class HomeActivity : ComponentActivity() {
             startActivity(intent)
         }
 
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                searchProduct()
+            }
+        })
+
+    }
+
+    private fun searchProduct() {
+        val searchQuery = binding.etSearch.text.toString().lowercase()
+        filteredList.clear()
+        filteredList.addAll(
+            itemList.filter {
+                it.name.lowercase().contains(searchQuery)
+            }
+        )
+        binding.recyclerHome.adapter?.notifyDataSetChanged()
     }
 }

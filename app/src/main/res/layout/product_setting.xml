@@ -228,10 +228,12 @@
 
                 <ImageView
                     android:id="@+id/ivPSImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200sp"
+                    android:layout_height="200sp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/default_product"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintWidth_default="percent"
                     app:layout_constraintWidth_percent="0.5" />
 
                 <Button
