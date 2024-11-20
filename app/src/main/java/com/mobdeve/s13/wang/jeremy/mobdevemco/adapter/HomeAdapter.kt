@@ -31,10 +31,12 @@ class HomeAdapter(private val items: List<Item>, private val context: Context) :
             // Add item logic
             binding.ivItemAdd.setOnClickListener {
                 val currentQty = binding.etItemQty.text.toString().toInt()
-                val newQty = currentQty + 1
-                binding.etItemQty.setText(newQty.toString())
-                sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
-                itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
+                if (currentQty < item.stock) {
+                    val newQty = currentQty + 1
+                    binding.etItemQty.setText(newQty.toString())
+                    sharedPreferences.edit().putInt(key, newQty).apply() // Save new quantity
+                    itemWithQuantityList.find { it.item.itemSKU == item.itemSKU }?.quantity = newQty
+                }
             }
 
             // Subtract item logic
