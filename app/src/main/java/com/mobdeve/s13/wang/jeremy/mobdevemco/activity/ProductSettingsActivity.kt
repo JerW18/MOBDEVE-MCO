@@ -208,7 +208,6 @@ class ProductSettingsActivity : ComponentActivity() {
                                 binding.tvPSDateAndTime,
                                 binding.tvPSInOut,
                                 binding.tvPSQty,
-                                binding.tvPSProduct,
                                 binding.btnLogsFilter
                             )
                         )
@@ -262,7 +261,6 @@ class ProductSettingsActivity : ComponentActivity() {
                                 binding.tvPSDateAndTime,
                                 binding.tvPSInOut,
                                 binding.tvPSQty,
-                                binding.tvPSProduct,
                                 binding.btnLogsFilter
                             )
                         )
@@ -280,7 +278,6 @@ class ProductSettingsActivity : ComponentActivity() {
                         binding.tvPSDateAndTime,
                         binding.tvPSInOut,
                         binding.tvPSQty,
-                        binding.tvPSProduct,
                         binding.btnLogsFilter
                     ),
                     emptyList()
