@@ -216,6 +216,11 @@ class ProductSettingsActivity : ComponentActivity() {
             }
         }
 
+        binding.btnScanSKU.setOnClickListener {
+            val intent = Intent(this, ScanSKUActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnPSEdit.setOnClickListener {
             if (state != "EDIT") {
                 binding.recyclerEdit.visibility = View.VISIBLE
