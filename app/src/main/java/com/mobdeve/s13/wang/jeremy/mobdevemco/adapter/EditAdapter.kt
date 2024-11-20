@@ -1,5 +1,6 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.activity.EditProductActivity
+import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.AcctDeletionConfirmationBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.EditItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
@@ -46,6 +48,7 @@ class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<E
             }
 
         }
+
         private fun deleteItem(item: Item) {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val db = FirebaseFirestore.getInstance()

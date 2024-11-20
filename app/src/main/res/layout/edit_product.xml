@@ -208,7 +208,7 @@
             android:layout_marginBottom="16dp"
             android:background="@drawable/active_button"
             android:fontFamily="@font/inter_bold"
-            android:text="Save Product"
+            android:text="Edit Product"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:visibility="visible"

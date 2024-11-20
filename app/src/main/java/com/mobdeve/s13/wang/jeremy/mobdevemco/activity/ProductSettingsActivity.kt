@@ -29,13 +29,14 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.EditAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.LogsAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.LogsFilterAdapter
-import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogoutConfirmationBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsFilterModalBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ProductSettingBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.convertBitmapToBase64
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.uriToBase64
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
 class ProductSettingsActivity : ComponentActivity() {
     private lateinit var binding: ProductSettingBinding
@@ -163,7 +164,8 @@ class ProductSettingsActivity : ComponentActivity() {
 
             val item = Item(sku, base64, name, price.toFloat(), quantity)
 
-            // Call function to save product to Firebase
+            itemWithQuantityList.add(ItemWithQuantity(item, 0))
+
             saveItemToDatabase(item)
         }
 
