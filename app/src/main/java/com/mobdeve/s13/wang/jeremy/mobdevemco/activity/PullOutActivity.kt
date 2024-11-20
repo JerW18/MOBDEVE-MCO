@@ -30,7 +30,7 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
         binding.recyclerPullOut.layoutManager = LinearLayoutManager(this)
         val filteredList = itemWithQuantityList.filter { it.quantity > 0 }.toMutableList()
         binding.recyclerPullOut.adapter = PullOutAdapter(filteredList, this, this)
-        binding.tvPullOutTotal.text = "₱ ${filteredList.sumOf { it.item.price * it.quantity }}"
+        binding.tvPullOutTotal.text = "${filteredList.sumOf { it.item.price * it.quantity }}"
     }
 
     override fun onItemSelectionChanged(totalPrice: Double) {

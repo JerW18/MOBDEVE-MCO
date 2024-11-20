@@ -2,8 +2,12 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.Manifest
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.TextWatcher
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -27,6 +31,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
 class ScanActivity : ComponentActivity() {
@@ -35,11 +40,14 @@ class ScanActivity : ComponentActivity() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var barcodeScanner: BarcodeScanner
     private var rawValue: String = ""
+    private lateinit var sharedPreferences: SharedPreferences
 
-    private var hasScanned = false // Flag to prevent further scanning
+    private var hasScanned = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPreferences = getSharedPreferences("item_preferences", MODE_PRIVATE)
 
         binding = ScanBinding.inflate(layoutInflater)
         initUI()
@@ -107,8 +115,25 @@ class ScanActivity : ComponentActivity() {
         }
 
         binding.btnScanPullOut.setOnClickListener {
+            val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
+
+            if (item != null) {
+                val newQty = binding.etScanQty.text.toString().toInt()
+                Log.d("ScanActivity", "newQty: $newQty")
+                if (newQty >= 0) {
+                    item.quantity = newQty
+                    val key = "qty_${item.item.itemSKU}"
+                    sharedPreferences.edit().putInt(key, newQty).apply()
+                    Toast.makeText(this, "Quantity updated.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Invalid quantity.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Item not found.", Toast.LENGTH_SHORT).show()
+            }
             finish()
         }
+
         binding.ivScanBack.setOnClickListener {
             finish()
         }
@@ -126,7 +151,7 @@ class ScanActivity : ComponentActivity() {
 
         binding.btnScanAddNew.setOnClickListener {
             val intent = Intent(this, ProductSettingsActivity::class.java).apply {
-                putExtra("itemSKU", rawValue) // Pass the scanned barcode value
+                putExtra("itemSKU", rawValue)
             }
             startActivity(intent)
         }
@@ -173,7 +198,7 @@ class ScanActivity : ComponentActivity() {
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, { imageProxy ->
-                        if (!hasScanned) { // Only process if scanning is still active
+                        if (!hasScanned) {
                             processImageProxy(imageProxy)
                         } else {
                             imageProxy.close()
@@ -200,7 +225,7 @@ class ScanActivity : ComponentActivity() {
             barcodeScanner.process(image)
                 .addOnSuccessListener { barcodes ->
                     if (barcodes.isNotEmpty()) {
-                        hasScanned = true // Stop further scanning
+                        hasScanned = true
                         processBarcode(barcodes.first()) // Process the first barcode
                     }
                 }
@@ -218,76 +243,60 @@ class ScanActivity : ComponentActivity() {
     private fun processBarcode(barcode: Barcode) {
         rawValue = barcode.rawValue
 
+        val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
+
         if (rawValue != null) {
-            // Reference to Firestore
-            val firestore = FirebaseFirestore.getInstance()
-            val userUid = FirebaseAuth.getInstance().currentUser?.uid
+            // Search for the item in the global itemWithQuantityList
+            val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
 
-            if (userUid != null) {
-                // Navigate to the user's items collection
-                firestore.collection("users") // Replace "users" if your collection name differs
-                    .document(userUid)
-                    .collection("items")
-                    .whereEqualTo("itemSKU", rawValue)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        if (!querySnapshot.isEmpty) {
-                            // Item found
-                            val item = querySnapshot.documents[0].toObject(Item::class.java) // Replace `Item` with your data model class
-                            if (item != null) {
-                                toggleVisibility(
-                                    listOf(
-                                        binding.ivScanImage,
-                                        binding.tvScanProduct,
-                                        binding.etScanQty,
-                                        binding.ivScanAdd,
-                                        binding.ivScanMinus,
-                                        binding.tvScanPrice,
-                                        binding.tvScanStock,
-                                        binding.tvScanStockLabel,
-                                        binding.tvScanPesoLabel
-                                    ),
-                                    listOf(
-                                        binding.btnScanAddNew,
-                                        binding.tvScanAddNew
-                                    )
-                                )
+            if (item != null) {
+                // Item found in the list
+                toggleVisibility(
+                    listOf(
+                        binding.ivScanImage,
+                        binding.tvScanProduct,
+                        binding.etScanQty,
+                        binding.ivScanAdd,
+                        binding.ivScanMinus,
+                        binding.tvScanPrice,
+                        binding.tvScanStock,
+                        binding.tvScanStockLabel,
+                        binding.tvScanPesoLabel
+                    ),
+                    listOf(
+                        binding.btnScanAddNew,
+                        binding.tvScanAddNew
+                    )
+                )
 
-                                binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.imageUri))
-                                binding.tvScanProduct.text = item.name
-                                binding.tvScanPrice.text = item.price.toString()
-                                binding.tvScanStock.text = item.stock.toString()
+                binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))
+                binding.tvScanProduct.text = item.item.name
+                binding.tvScanPrice.text = item.item.price.toString()
+                binding.tvScanStock.text = item.item.stock.toString()
+                binding.etScanQty.setText(item.quantity.toString())
 
-                            } else {
-                                Toast.makeText(this, "Item format error.", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            // Item not found
-                            toggleVisibility(
-                                listOf(
-                                    binding.btnScanAddNew,
-                                    binding.tvScanAddNew
-                                ),
-                                listOf(
-                                    binding.ivScanImage,
-                                    binding.tvScanProduct,
-                                    binding.etScanQty,
-                                    binding.ivScanAdd,
-                                    binding.ivScanMinus,
-                                    binding.tvScanPrice,
-                                    binding.tvScanStock,
-                                    binding.tvScanStockLabel,
-                                    binding.tvScanPesoLabel
-                                )
-                            )
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        // Handle error
-                        Toast.makeText(this, "Error fetching item: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
             } else {
-                Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
+                // Item not found in the list
+                Toast.makeText(this, "Item not found in the list.", Toast.LENGTH_SHORT).show()
+
+                // Toggle visibility as if item was not found in Firestore
+                toggleVisibility(
+                    listOf(
+                        binding.btnScanAddNew,
+                        binding.tvScanAddNew
+                    ),
+                    listOf(
+                        binding.ivScanImage,
+                        binding.tvScanProduct,
+                        binding.etScanQty,
+                        binding.ivScanAdd,
+                        binding.ivScanMinus,
+                        binding.tvScanPrice,
+                        binding.tvScanStock,
+                        binding.tvScanStockLabel,
+                        binding.tvScanPesoLabel
+                    )
+                )
             }
         } else {
             Toast.makeText(this, "Invalid barcode scanned.", Toast.LENGTH_SHORT).show()
