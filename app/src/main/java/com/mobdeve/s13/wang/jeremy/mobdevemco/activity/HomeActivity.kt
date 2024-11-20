@@ -46,9 +46,17 @@ class HomeActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         binding.recyclerHome.adapter?.notifyDataSetChanged()
+        // check if user is still authenticated if not redirect to loginactivity and finish the current activity
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private suspend fun getItem() {
+        itemList.clear()
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
