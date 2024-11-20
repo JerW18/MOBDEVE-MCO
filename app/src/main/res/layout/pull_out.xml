@@ -89,9 +89,9 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/active_button"
         android:fontFamily="@font/inter_semibold"
-        android:text="Check Out"
+        android:text="CHECK OUT"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ivCart"
         app:layout_constraintTop_toTopOf="@+id/ivCart" />
