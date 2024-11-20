@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp">
+
+        <!-- Title TextView -->
+        <TextView
+            android:id="@+id/tvConfirmProductDel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Confirm Deletion"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Description TextView -->
+        <TextView
+            android:id="@+id/tvProductDeletionMessage"
+            android:layout_width="275sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Are you sure you want to delete this product?"
+            android:textAlignment="center"
+            android:textColor="@color/gray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvConfirmProductDel" />
+
+        <!-- Button Layout -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductDeletionMessage">
+
+            <Button
+                android:id="@+id/btnProductDeletionCancel"
+                android:layout_width="125sp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/inactive_button"
+                android:padding="12dp"
+                android:text="Cancel"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:strokeWidth="2dp" />
+
+            <Button
+                android:id="@+id/btnProductDeletionConfirm"
+                android:layout_width="125sp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/delete_button"
+                android:padding="12dp"
+                android:text="Delete"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
