@@ -1,6 +1,5 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager

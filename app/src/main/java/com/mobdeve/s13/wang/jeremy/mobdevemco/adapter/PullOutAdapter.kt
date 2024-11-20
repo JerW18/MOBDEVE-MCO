@@ -3,7 +3,6 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.PullOutItemBinding
