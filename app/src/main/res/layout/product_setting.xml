@@ -11,6 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageButton
+            android:id="@+id/btnLogsFilter"
+            android:layout_width="25sp"
+            android:layout_height="25sp"
+            android:background="@drawable/transparent_logo"
+            android:src="@drawable/baseline_filter_alt_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPSProduct"
+            app:layout_constraintStart_toEndOf="@+id/tvPSProduct"
+            app:layout_constraintTop_toTopOf="@+id/tvPSProduct" />
+
         <View
             android:id="@+id/viewPSGreenHeader"
             android:layout_width="match_parent"
@@ -255,7 +266,7 @@
 
         <TextView
             android:id="@+id/tvPSDateAndTime"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"
@@ -272,29 +283,27 @@
             android:id="@+id/tvPSInOut"
             android:layout_width="40sp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
             android:fontFamily="@font/inter"
             android:text="In/Out"
             android:textColor="@color/gray"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/tvPSProduct"
             app:layout_constraintStart_toEndOf="@+id/tvPSDateAndTime"
             app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
 
         <TextView
             android:id="@+id/tvPSProduct"
-            android:layout_width="120sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="4dp"
             android:fontFamily="@font/inter"
             android:text="Product"
             android:textColor="@color/gray"
             android:textSize="12sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/tvPSQty"
             app:layout_constraintStart_toEndOf="@+id/tvPSInOut"
             app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
 
@@ -319,7 +328,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/viewPSButtonBackground"
             app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
-            app:layout_constraintTop_toBottomOf="@+id/tvPSDateAndTime" >
+            app:layout_constraintTop_toBottomOf="@+id/tvPSDateAndTime">
 
         </androidx.recyclerview.widget.RecyclerView>
 
