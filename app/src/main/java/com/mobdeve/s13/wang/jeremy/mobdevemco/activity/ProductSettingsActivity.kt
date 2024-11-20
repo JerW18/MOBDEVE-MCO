@@ -174,6 +174,7 @@ class ProductSettingsActivity : ComponentActivity() {
                     listOf(
                         binding.tvPSProductSKULabel,
                         binding.etPSProductSKU,
+                        binding.btnScanSKU,
                         binding.tvPSProductNameLabel,
                         binding.tvPSPriceLabel,
                         binding.tvPSQtyLabel,
@@ -230,6 +231,7 @@ class ProductSettingsActivity : ComponentActivity() {
                             listOf(
                                 binding.tvPSProductSKULabel,
                                 binding.etPSProductSKU,
+                                binding.btnScanSKU,
                                 binding.tvPSProductNameLabel,
                                 binding.tvPSPriceLabel,
                                 binding.tvPSQtyLabel,
@@ -286,6 +288,7 @@ class ProductSettingsActivity : ComponentActivity() {
                             listOf(
                                 binding.tvPSProductSKULabel,
                                 binding.etPSProductSKU,
+                                binding.btnScanSKU,
                                 binding.tvPSProductNameLabel,
                                 binding.tvPSPriceLabel,
                                 binding.tvPSQtyLabel,
