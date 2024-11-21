@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,6 +16,10 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.logsList.Companion.logsList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -41,99 +46,104 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
         }
 
         binding.btnPullOut.setOnClickListener {
-            //take all the items with quantity > 0 and add them to the logs in firestore
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if (currentUser != null) {
-                val userId = currentUser.uid
-                val logsRef = FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(userId)
-                    .collection("logs")
+            // Ensure that the entire logic is inside a coroutine scope
+            lifecycleScope.launch {
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                if (currentUser != null) {
+                    val userId = currentUser.uid
+                    val logsRef = FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(userId)
+                        .collection("logs")
 
-                // Filter items with quantity > 0
-                val items = itemWithQuantityList.filter { it.quantity > 0 }
+                    // Filter items with quantity > 0
+                    val items = itemWithQuantityList.filter { it.quantity > 0 }
 
+                    if (items.isNotEmpty()) {
+                        // Format the current date and time
+                        val date = Date()
+                        val dateFormat = SimpleDateFormat("MM.dd.yyyy HH:mm:ss", Locale.getDefault())
+                        val dateString = dateFormat.format(date)
 
+                        val totalCost = items.sumOf { it.item.price * it.quantity }
 
-                if (items.isNotEmpty()) {
-                    // Format the current date and time
-                    val date = Date()
-                    val dateFormat = SimpleDateFormat("MM.dd.yyyy HH:mm:ss", Locale.getDefault())
-                    val dateString = dateFormat.format(date)
+                        val log = Logs(dateString, items, totalCost, "Out")
 
-                    val totalCost = items.sumOf { it.item.price * it.quantity }
+                        try {
+                            // Add log to Firestore (awaiting this operation)
+                            logsRef.add(log).await()
 
-                    val log = Logs(dateString, items, totalCost, "Out")
+                            // Iterate over each item and process them asynchronously
+                            val tasks = items.map { item ->
+                                async {
+                                    val itemRef = FirebaseFirestore.getInstance()
+                                        .collection("users")
+                                        .document(userId)
+                                        .collection("items")
 
-                    logsRef.add(log)
-                        .addOnSuccessListener {
-                            for (item in items) {
-                                val itemRef = FirebaseFirestore.getInstance()
-                                    .collection("users")
-                                    .document(userId)
-                                    .collection("items")
+                                    val querySnapshot = itemRef
+                                        .whereEqualTo("itemID", item.item.itemID)
+                                        .get()
+                                        .await()
 
-                                itemRef
-                                    .whereEqualTo("itemID", item.item.itemID)
-                                    .get()
-                                    .addOnSuccessListener { querySnapshot ->
-                                        if (!querySnapshot.isEmpty) {
-                                            val document = querySnapshot.documents[0]
-                                            val documentId = document.id
+                                    if (!querySnapshot.isEmpty) {
+                                        val document = querySnapshot.documents[0]
+                                        val documentId = document.id
+                                        val newStock = item.item.stock - item.quantity
 
-                                            val newStock = item.item.stock - item.quantity
+                                        // Update stock in Firestore (awaiting this operation)
+                                        itemRef.document(documentId)
+                                            .update("stock", newStock)
+                                            .await()
 
-                                            itemRef.document(documentId)
-                                                .update("stock", newStock)
-                                                .addOnSuccessListener {
-                                                    val itemInList = itemList.find { it.itemID == item.item.itemID }
-                                                    if (itemInList != null) {
-                                                        itemInList.stock = newStock
-                                                    }
+                                        // Update local lists and shared preferences
+                                        val itemInList = itemList.find { it.itemID == item.item.itemID }
+                                        itemInList?.stock = newStock
 
-                                                    val itemWithQuantity = itemWithQuantityList.find { it.item.itemID == item.item.itemID }
-                                                    if (itemWithQuantity != null) {
-                                                        itemWithQuantity.item.stock = newStock
-                                                        itemWithQuantity.quantity = 0
-                                                    }
-
-                                                    val key = "qty_${item.item.itemID}"
-                                                    sharedPreferences.edit().putInt(key, 0).apply()
-
-
-                                                    Log.d("FirestoreUpdate", "Item ${item.item.itemID} updated successfully.")
-
-                                                    val resultIntent = Intent()
-                                                    setResult(RESULT_OK, resultIntent)
-                                                    finish()
-                                                }
-                                                .addOnFailureListener { e ->
-                                                    Log.e("FirestoreUpdate", "Error updating item ${item.item.itemID}: ${e.message}")
-                                                }
-                                        } else {
-                                            Log.e("FirestoreUpdate", "No document found for itemId: ${item.item.itemID}")
+                                        val itemWithQuantity = itemWithQuantityList.find { it.item.itemID == item.item.itemID }
+                                        itemWithQuantity?.apply {
+                                            item.item.stock = newStock
+                                            quantity = 0
                                         }
+
+                                        val key = "qty_${item.item.itemID}"
+                                        sharedPreferences.edit().putInt(key, 0).apply()
+
+                                        Log.d("FirestoreUpdate", "Item ${item.item.itemID} updated successfully.")
+                                    } else {
+                                        Log.e("FirestoreUpdate", "No document found for itemId: ${item.item.itemID}")
                                     }
-                                    .addOnFailureListener { e ->
-                                        Log.e("FirestoreQuery", "Error querying Firestore for itemId ${item.item.itemID}: ${e.message}")
-                                    }
+                                }
                             }
 
-                            Toast.makeText(this, "Items successfully checked out.", Toast.LENGTH_SHORT).show()
+                            // Wait for all Firestore updates to complete
+                            tasks.awaitAll()
 
+                            // Show success message
+                            Toast.makeText(this@PullOutActivity, "Items successfully pulled out.", Toast.LENGTH_SHORT).show()
+
+                            // Add log to local logs list
                             logsList.add(0, log)
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error adding log: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    Toast.makeText(this, "No items with quantity greater than 0.", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
-            }
 
+                            // Return result to previous activity
+                            val resultIntent = Intent()
+                            setResult(RESULT_OK, resultIntent)
+                            finish()
+
+                        } catch (e: Exception) {
+                            // Handle errors
+                            Log.e("FirestoreUpdate", "Error processing items: ${e.message}")
+                            Toast.makeText(this@PullOutActivity, "Error processing items: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this@PullOutActivity, "No items with quantity greater than 0.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@PullOutActivity, "User not logged in.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
         binding.recyclerPullOut.layoutManager = LinearLayoutManager(this)
         val filteredList = itemWithQuantityList.filter { it.quantity > 0 }.toMutableList()
         binding.recyclerPullOut.adapter = PullOutAdapter(filteredList, this, this)
