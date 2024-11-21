@@ -28,7 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.EditAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.LogsAdapter
-import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.LogsFilterAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsFilterModalBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ProductSettingBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
@@ -36,6 +35,7 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.c
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.uriToBase64
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.logsList.Companion.logsList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
 class ProductSettingsActivity : ComponentActivity() {
@@ -152,7 +152,7 @@ class ProductSettingsActivity : ComponentActivity() {
         binding.btnPSLogs.isAllCaps = false
         binding.btnSaveProduct.isAllCaps = false
         binding.recyclerLogs.layoutManager = LinearLayoutManager(this)
-        binding.recyclerLogs.adapter = LogsAdapter(numList)
+        binding.recyclerLogs.adapter = LogsAdapter(logsList)
 
         val dividerItemDecoration =
             DividerItemDecoration(binding.recyclerLogs.context, LinearLayoutManager.VERTICAL)
@@ -171,9 +171,7 @@ class ProductSettingsActivity : ComponentActivity() {
             val quantity = binding.etPSQty.text.toString().toIntOrNull() ?: 0
             val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
 
-            val item = Item(sku, base64, name, price.toDouble(), quantity)
-
-            itemWithQuantityList.add(ItemWithQuantity(item, 0))
+            val item = Item(sku, base64, name, price, quantity)
 
             saveItemToDatabase(item)
         }
@@ -337,11 +335,9 @@ class ProductSettingsActivity : ComponentActivity() {
         }
 
         binding.etSearchEdit.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun afterTextChanged(s: android.text.Editable?) {
                 searchProduct()
@@ -368,7 +364,6 @@ class ProductSettingsActivity : ComponentActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(dialogBinding.root)
         dialogBinding.rvProductList.layoutManager = LinearLayoutManager(this)
-        dialogBinding.rvProductList.adapter = LogsFilterAdapter(numList)
 
         // Set transparent background for the dialog
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -377,7 +372,6 @@ class ProductSettingsActivity : ComponentActivity() {
         dialogBinding.btnFilterLogs.setOnClickListener {
             dialog.dismiss()
         }
-
 
         // Show the dialog
         dialog.show()
@@ -401,9 +395,12 @@ class ProductSettingsActivity : ComponentActivity() {
                 }
             }
 
+            item.itemID = itemsRef.document().id
+
             itemsRef.add(item)
                 .addOnSuccessListener { documentReference ->
                     itemList.add(item)
+                    itemWithQuantityList.add(ItemWithQuantity(item, 0))
 
                     // Clear the input fields
                     binding.etPSProductSKU.text.clear()

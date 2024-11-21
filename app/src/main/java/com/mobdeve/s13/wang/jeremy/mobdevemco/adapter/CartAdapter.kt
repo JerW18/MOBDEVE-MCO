@@ -7,12 +7,17 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.CartDetailsBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsFilterBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.TransactionItemBinding
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
 
-class CartAdapter(private val products: List<Int>) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
+class CartAdapter(private val products: List<ItemWithQuantity>) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: TransactionItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindData(item: Int) {
-
+        fun bindData(item: ItemWithQuantity) {
+            binding.tvTransItem.text = item.item.name
+            binding.tvTransQty.text = "${item.quantity}"
+            binding.tvTransPrice.text = "₱ ${item.item.price}"
         }
     }
 

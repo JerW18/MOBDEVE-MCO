@@ -10,9 +10,9 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -27,13 +27,27 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.list.logsList.Companion.logsList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
 
 class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     private lateinit var binding: HomeBinding
     private lateinit var sharedPreferences: SharedPreferences
     private var filteredList = mutableListOf<Item>()
 
+    private val pullOutActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            CoroutineScope(Dispatchers.Main).launch {
+                searchProduct()
+                binding.recyclerHome.adapter?.notifyDataSetChanged()
+                binding.tvNumItemSelected.text =
+                    "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
+                binding.tvTotalSum.text =
+                    "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +55,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         binding = HomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         CoroutineScope(Dispatchers.Main).launch {
+            getLogs()
             getItem()
             filteredList = itemList.toMutableList()
             initUI()
@@ -57,6 +72,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     override fun onResume() {
         super.onResume()
         searchProduct()
+
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
             val intent = Intent(this, LoginActivity::class.java)
@@ -83,7 +99,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
                     val items = querySnapshot.toObjects(Item::class.java)
                     for (item in items) {
                         itemList.add(item)
-                        val key = "qty_${item.itemSKU}"
+                        val key = "qty_${item.itemID}"
                         itemWithQuantityList.add(
                             ItemWithQuantity(
                                 item,
@@ -106,6 +122,39 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         }
     }
 
+    private suspend fun getLogs() {
+        logsList.clear()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val logsRef = FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(userId)
+                .collection("logs")
+
+            try {
+                val querySnapshot = logsRef.get().await()
+
+                if (!querySnapshot.isEmpty) {
+                    val logs = querySnapshot.toObjects(Logs::class.java)
+                    for (log in logs) {
+                        logsList.add(log)
+                        Log.d("GetLogs", "Log retrieved: ${log.date}")
+                    }
+                    logsList.sortByDescending { it.date }
+                    Log.d("GetLogs", "Logs retrieved successfully: ${logsList.size} logs")
+                } else {
+                    Log.d("GetLogs", "No logs found.")
+                }
+            } catch (e: Exception) {
+                Log.e("GetLogs", "Error getting logs: ", e)
+            }
+        } else {
+            Log.e("GetLogs", "User not authenticated.")
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun initUI() {
         val text = binding.tvAppName.text.toString()
         val spannableString = SpannableString(text)
@@ -121,7 +170,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
 
         binding.btnReview.setOnClickListener {
             val intent = Intent(this, PullOutActivity::class.java)
-            startActivity(intent)
+            pullOutActivityLauncher.launch(intent)
         }
 
         binding.ivNotif.setOnClickListener {

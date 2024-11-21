@@ -118,11 +118,16 @@ class ScanActivity : ComponentActivity() {
             val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
 
             if (item != null) {
-                val newQty = binding.etScanQty.text.toString().toInt()
-                Log.d("ScanActivity", "newQty: $newQty")
+                val newQty = binding.etScanQty.text.toString().toInt() + item.quantity
+
+                if (newQty > item.item.stock) {
+                    Toast.makeText(this, "Quantity exceeds stock.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 if (newQty >= 0) {
                     item.quantity = newQty
-                    val key = "qty_${item.item.itemSKU}"
+                    val key = "qty_${item.item.itemID}"
                     sharedPreferences.edit().putInt(key, newQty).apply()
                     Toast.makeText(this, "Quantity updated.", Toast.LENGTH_SHORT).show()
                 } else {
@@ -139,7 +144,7 @@ class ScanActivity : ComponentActivity() {
         }
 
         binding.ivScanMinus.setOnClickListener {
-            if (binding.etScanQty.text.toString().toInt() > 1) {
+            if (binding.etScanQty.text.toString().toInt() > 0) {
                 binding.etScanQty.setText(
                     (binding.etScanQty.text.toString().toInt() - 1).toString()
                 )
@@ -243,14 +248,10 @@ class ScanActivity : ComponentActivity() {
     private fun processBarcode(barcode: Barcode) {
         rawValue = barcode.rawValue
 
-        val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
-
         if (rawValue != null) {
-            // Search for the item in the global itemWithQuantityList
             val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
 
             if (item != null) {
-                // Item found in the list
                 toggleVisibility(
                     listOf(
                         binding.ivScanImage,
@@ -273,13 +274,10 @@ class ScanActivity : ComponentActivity() {
                 binding.tvScanProduct.text = item.item.name
                 binding.tvScanPrice.text = item.item.price.toString()
                 binding.tvScanStock.text = item.item.stock.toString()
-                binding.etScanQty.setText(item.quantity.toString())
 
             } else {
-                // Item not found in the list
                 Toast.makeText(this, "Item not found in the list.", Toast.LENGTH_SHORT).show()
 
-                // Toggle visibility as if item was not found in Firestore
                 toggleVisibility(
                     listOf(
                         binding.btnScanAddNew,

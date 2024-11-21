@@ -28,7 +28,7 @@ class PullOutAdapter(
             sharedPreferences: SharedPreferences,
             onQuantityChanged: (ItemWithQuantity) -> Unit
         ) {
-            val key = "qty_${item.item.itemSKU}"
+            val key = "qty_${item.item.itemID}"
             binding.tvPullOutPrice.text = item.item.price.toString()
             binding.tvPullOutStock.text = item.item.stock.toString()
             binding.ivPullOutImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))

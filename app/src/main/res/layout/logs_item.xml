@@ -6,11 +6,11 @@
     android:layout_height="60sp">
 
     <TextView
-        android:id="@+id/tvLogItemDate"
+        android:id="@+id/tvLogItemDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_bold"
-        android:text="11.10.2003"
+        android:text="11.10.2003 11:00pm"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,13 +21,13 @@
         android:id="@+id/tvLogItemInOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
+        android:layout_marginStart="56dp"
         android:fontFamily="@font/inter"
         android:text="Out"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvLogItemTime"
+        app:layout_constraintStart_toEndOf="@+id/tvLogItemDateTime"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -41,21 +41,6 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toEndOf="@+id/tvLogItemInOut"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvLogItemTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/inter"
-        android:text="11:00pm"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvLogItemDate"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

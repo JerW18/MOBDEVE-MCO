@@ -6,14 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.CartDetailsBinding
-import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsFilterModalBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsItemBinding
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
 
-class LogsAdapter(private val items: List<Int>) : RecyclerView.Adapter<LogsAdapter.ViewHolder>() {
+class LogsAdapter(private val logs: List<Logs>) : RecyclerView.Adapter<LogsAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: LogsItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindData(item: Int) {
-
+        fun bindData(log: Logs) {
+            binding.tvLogItemDateTime.text = log.date
+            binding.tvLogItemInOut.text = log.type
+            binding.tvLogItemQty.text = "₱ ${log.total}"
         }
     }
 
@@ -24,16 +26,16 @@ class LogsAdapter(private val items: List<Int>) : RecyclerView.Adapter<LogsAdapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(items[position])
+        holder.bindData(logs[position])
         holder.itemView.setOnClickListener {
-                val dialogBinding = CartDetailsBinding.inflate(LayoutInflater.from(holder.itemView.context))
+            val dialogBinding = CartDetailsBinding.inflate(LayoutInflater.from(holder.itemView.context))
 
             // Create the dialog
             val dialog = Dialog(holder.itemView.context)
             dialog.setContentView(dialogBinding.root)
             dialogBinding.rvTransactionDetails.layoutManager = LinearLayoutManager(holder.itemView.context)
-            val numList = mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-            dialogBinding.rvTransactionDetails.adapter = CartAdapter(numList)
+
+            dialogBinding.rvTransactionDetails.adapter = CartAdapter(logs[position].items)
 
             // Set transparent background for the dialog
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -43,15 +45,13 @@ class LogsAdapter(private val items: List<Int>) : RecyclerView.Adapter<LogsAdapt
                 dialog.dismiss()
             }
 
-
             // Show the dialog
             dialog.show()
         }
 
-        }
-
+    }
 
     override fun getItemCount(): Int {
-        return items.size
+        return logs.size
     }
 }

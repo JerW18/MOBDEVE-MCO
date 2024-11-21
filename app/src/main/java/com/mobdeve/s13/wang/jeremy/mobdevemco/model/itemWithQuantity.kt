@@ -7,6 +7,5 @@ class ItemWithQuantity() {
         this.item = item
         this.quantity = quantity
     }
-
 }
 

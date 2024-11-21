@@ -13,14 +13,14 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.d
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
-class HomeAdapter(private val items: List<Item>, private val context: Context, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(private val items: MutableList<Item>, private val context: Context, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
 
     class ViewHolder(private val binding: HomeItemBinding, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Item, sharedPreferences: SharedPreferences) {
-            val key = "qty_${item.itemSKU}"
+            val key = "qty_${item.itemID}"
 
             val savedQty = sharedPreferences.getInt(key, 0)
             binding.etItemQty.setText(savedQty.toString())
@@ -49,11 +49,9 @@ class HomeAdapter(private val items: List<Item>, private val context: Context, p
             }
 
             binding.etItemQty.addTextChangedListener(object : TextWatcher {
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                 override fun afterTextChanged(s: android.text.Editable?) {
                     if (binding.etItemQty.text.toString().isEmpty()) {
