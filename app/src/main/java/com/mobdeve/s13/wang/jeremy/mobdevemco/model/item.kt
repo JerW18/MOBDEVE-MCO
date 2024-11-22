@@ -16,4 +16,5 @@ class Item() {  // Explicit no-argument constructor
         this.price = price
         this.stock = stock
     }
+    // You can also create a data class for easier initialization
 }

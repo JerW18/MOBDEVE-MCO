@@ -15,6 +15,8 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.PullOutBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.logsList.Companion.logsList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemDetails
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemLog
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -67,7 +69,19 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
 
                         val totalCost = items.sumOf { it.item.price * it.quantity }
 
-                        val log = Logs(dateString, items, totalCost, "Out")
+                        // create logItem
+                        val logitems = items.map { item ->
+                            ItemLog(
+                                item = ItemDetails(
+                                    itemID = item.item.itemID,
+                                    name = item.item.name,
+                                    price = item.item.price,
+                                    stock = item.item.stock
+                                ),
+                                quantity = item.quantity
+                            )
+                        }
+                        val log = Logs(dateString, logitems, totalCost, "Out")
 
                         try {
                             // Add log to Firestore (awaiting this operation)
