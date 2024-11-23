@@ -25,6 +25,7 @@ import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListener {
     private lateinit var binding: PullOutBinding
@@ -65,7 +66,9 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
                         // Format the current date and time
                         val date = Date()
                         val dateFormat = SimpleDateFormat("MM.dd.yyyy HH:mm:ss", Locale.getDefault())
+                        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Manila")
                         val dateString = dateFormat.format(date)
+
 
                         val totalCost = items.sumOf { it.item.price * it.quantity }
 

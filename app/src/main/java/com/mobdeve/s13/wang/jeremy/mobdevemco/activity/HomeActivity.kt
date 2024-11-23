@@ -58,6 +58,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
             getLogs()
             getItem()
             filteredList = itemList.toMutableList()
+            filteredList = filteredList.filter { it.stock > 0 }.toMutableList()
             initUI()
             binding.tvNumItemSelected.text = "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
             binding.tvTotalSum.text = "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
@@ -213,6 +214,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         filteredList.addAll(
             itemList.filter {
                 it.name.lowercase().contains(searchQuery)
+                it.stock > 0
             }
         )
         binding.recyclerHome.adapter?.notifyDataSetChanged()
