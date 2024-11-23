@@ -36,6 +36,7 @@ class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<E
                 intent.putExtra("price", formattedPrice)
                 intent.putExtra("stock", item.stock.toString())
                 intent.putExtra("imageUri", item.imageUri)
+                intent.putExtra("restock", item.restock.toString())
                 startActivity(binding.root.context, intent, null)
             }
             binding.tvPSDelete.setOnClickListener {

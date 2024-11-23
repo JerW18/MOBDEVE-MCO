@@ -144,6 +144,9 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
 
                             // Return result to previous activity
                             val resultIntent = Intent()
+                            // return a list of item id changed
+
+                            resultIntent.putExtra("itemID", items.map { it.item.itemID }.toTypedArray())
                             setResult(RESULT_OK, resultIntent)
                             finish()
 

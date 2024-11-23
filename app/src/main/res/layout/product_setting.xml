@@ -209,6 +209,30 @@
                     android:visibility="visible" />
 
                 <TextView
+                    android:id="@+id/tvPSRestockQtyLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Restock Quantity"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/etPSRestockQty"
+                    android:layout_width="352sp"
+                    android:layout_height="56sp"
+                    android:background="@drawable/input_field"
+                    android:fontFamily="@font/inter_medium"
+                    android:hint="Restock Quantity"
+                    android:inputType="text"
+                    android:padding="12sp"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
                     android:id="@+id/tvPSPriceLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

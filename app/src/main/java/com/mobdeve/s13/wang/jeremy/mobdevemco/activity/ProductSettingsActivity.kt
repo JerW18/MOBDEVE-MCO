@@ -69,20 +69,22 @@ class ProductSettingsActivity : ComponentActivity() {
             }
         }
 
-    private val barcodeResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val barcode = result.data?.getStringExtra("barcode")
-            barcode?.let {
-                binding.etPSProductSKU.setText(it)
+    private val barcodeResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val barcode = result.data?.getStringExtra("barcode")
+                barcode?.let {
+                    binding.etPSProductSKU.setText(it)
+                }
             }
         }
-    }
 
     override fun onResume() {
         super.onResume()
         binding.recyclerEdit.adapter?.notifyDataSetChanged()
 
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         cameraPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -170,8 +172,8 @@ class ProductSettingsActivity : ComponentActivity() {
             val name = binding.etPSProductName.text.toString()
             val quantity = binding.etPSQty.text.toString().toIntOrNull() ?: 0
             val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
-
-            val item = Item(sku, base64, name, price, quantity)
+            val restock = binding.etPSRestockQty.text.toString().toIntOrNull() ?: 0
+            val item = Item(sku, base64, name, price, quantity, restock)
 
             saveItemToDatabase(item)
         }
@@ -181,6 +183,8 @@ class ProductSettingsActivity : ComponentActivity() {
                 setButtonState(binding.btnPSAdd, true)
                 toggleVisibility(
                     listOf(
+                        binding.tvPSRestockQtyLabel,
+                        binding.etPSRestockQty,
                         binding.tvPSProductSKULabel,
                         binding.etPSProductSKU,
                         binding.btnScanSKU,
@@ -242,6 +246,8 @@ class ProductSettingsActivity : ComponentActivity() {
                         toggleVisibility(
                             emptyList(),
                             listOf(
+                                binding.tvPSRestockQtyLabel,
+                                binding.etPSRestockQty,
                                 binding.tvPSProductSKULabel,
                                 binding.etPSProductSKU,
                                 binding.btnScanSKU,
@@ -297,6 +303,8 @@ class ProductSettingsActivity : ComponentActivity() {
                         toggleVisibility(
                             emptyList(),
                             listOf(
+                                binding.tvPSRestockQtyLabel,
+                                binding.etPSRestockQty,
                                 binding.tvPSProductSKULabel,
                                 binding.etPSProductSKU,
                                 binding.btnScanSKU,
@@ -408,7 +416,7 @@ class ProductSettingsActivity : ComponentActivity() {
                     binding.etPSQty.text.clear()
                     binding.etPSPrice.text.clear()
                     binding.ivPSImage.setImageResource(R.drawable.default_product)
-
+                    binding.etPSRestockQty.text.clear()
                     Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
                     searchProduct()
                 }

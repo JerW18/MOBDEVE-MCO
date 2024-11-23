@@ -16,7 +16,7 @@
         android:src="@drawable/notif_icon" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/notif_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16sp"

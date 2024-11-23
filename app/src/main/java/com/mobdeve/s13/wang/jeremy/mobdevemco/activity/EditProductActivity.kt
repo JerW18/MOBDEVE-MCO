@@ -30,6 +30,7 @@ class EditProductActivity: ComponentActivity() {
     private lateinit var name: String;
     private lateinit var price: String;
     private lateinit var stock: String;
+    private lateinit var restock: String;
     private val galleryResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -67,11 +68,13 @@ class EditProductActivity: ComponentActivity() {
         price = intent.getStringExtra("price").toString()
         stock = intent.getStringExtra("stock").toString()
         base64 = intent.getStringExtra("imageUri").toString()
+        restock = intent.getStringExtra("restock").toString()
         binding.etPSProductSKU.isFocusable = false
         binding.etPSProductSKU.setText(itemSKU)
         binding.etPSProductName.setText(name)
         binding.etPSPrice.setText(price)
         binding.etPSQty.setText(stock)
+        binding.etPSRestockQty.setText(restock)
         binding.ivPSImage.setImageBitmap(decodeBase64ToBitmap(base64))
         binding.ivPSBack.setOnClickListener {
             finish()
@@ -85,12 +88,14 @@ class EditProductActivity: ComponentActivity() {
                 it.price = binding.etPSPrice.text.toString().toDouble()
                 it.stock = binding.etPSQty.text.toString().toInt()
                 it.imageUri = base64
+                it.restock = binding.etPSRestockQty.text.toString().toInt()
             }
             itemWithQuantityList.find { it.item.itemSKU == itemSKU }?.let {
                 it.item.name = binding.etPSProductName.text.toString()
                 it.item.price = binding.etPSPrice.text.toString().toDouble()
                 it.item.stock = binding.etPSQty.text.toString().toInt()
                 it.item.imageUri = base64
+                it.item.restock = binding.etPSRestockQty.text.toString().toInt()
             }
             val currentUser = FirebaseAuth.getInstance().currentUser
             val db = FirebaseFirestore.getInstance()
@@ -106,7 +111,8 @@ class EditProductActivity: ComponentActivity() {
                             "name" to binding.etPSProductName.text.toString(),
                             "price" to binding.etPSPrice.text.toString().toFloat(),
                             "stock" to binding.etPSQty.text.toString().toInt(),
-                            "imageUri" to base64
+                            "imageUri" to base64,
+                            "restock" to binding.etPSRestockQty.text.toString().toInt()
                         )
                         document.reference.update(updatedData as Map<String, Any>)
                             .addOnSuccessListener {

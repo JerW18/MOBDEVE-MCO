@@ -10,6 +10,7 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +31,7 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companio
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.logsList.Companion.logsList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
+import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.OnSwipeTouchListener
 
 class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     private lateinit var binding: HomeBinding
@@ -38,6 +40,19 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
 
     private val pullOutActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
+            val notifList = mutableListOf<String>()
+            var check = it.data?.getStringArrayExtra("itemID")
+            if (check != null) {
+                for (item in itemList) {
+                    if (check.contains(item.itemID)) {
+                        if (item.stock <= item.restock){
+                            notifList.add(item.name)
+                        }
+                    }
+                }
+                shownotif(notifList)
+
+            }
             CoroutineScope(Dispatchers.Main).launch {
                 searchProduct()
                 binding.recyclerHome.adapter?.notifyDataSetChanged()
@@ -46,6 +61,42 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
                 binding.tvTotalSum.text =
                     "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
             }
+        }
+    }
+
+    fun shownotif(notifList: MutableList<String>){
+        var notifString = "Stocks for "
+        var first = true
+        for (item in notifList){
+            if (first){
+                notifString += item
+                first = false
+            } else if (notifList.indexOf(item) == notifList.size - 1)
+                notifString += " and " + item
+            else
+                notifString += ", " + item
+        }
+        notifString += " are running low!"
+        binding.notifBar.translationY = -200f
+        binding.notifText.text = notifString
+        binding.notifBar.visibility = View.VISIBLE
+
+        // delay 2 seconds
+        binding.notifBar.postDelayed({
+            animateNotifBar()
+        }, 2000)
+    }
+
+    private fun animateNotifBar() {
+        binding.notifBar.animate().translationY(0f).setDuration(1000).withEndAction {
+            // Delay 3 seconds before starting the next animation
+            binding.notifBar.postDelayed({
+                // Animate it going up
+                binding.notifBar.animate().translationY(-200f).setDuration(1000).withEndAction {
+                    // Hide the notification bar after the animation ends
+                    binding.notifBar.visibility = View.GONE
+                }
+            }, 2000) // 3000 milliseconds = 3 seconds delay
         }
     }
 
@@ -168,6 +219,23 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         binding.btnReview.isAllCaps = false
         binding.recyclerHome.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerHome.adapter = HomeAdapter(filteredList, this, this)
+
+        @Suppress("ClickableViewAccessibility")
+        binding.notifBar.setOnTouchListener(object : OnSwipeTouchListener(this) {
+            override fun onSwipeUp() {
+                binding.notifBar.clearAnimation()
+                binding.notifBar.animate().translationY(-200f).setDuration(500).withEndAction {
+                    binding.notifBar.visibility = View.GONE
+                }
+            }
+
+        })
+
+        binding.notifBar.setOnClickListener {
+            // Navigate to NotifActivity on click
+            val intent = Intent(this, NotifActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.btnReview.setOnClickListener {
             val intent = Intent(this, PullOutActivity::class.java)
