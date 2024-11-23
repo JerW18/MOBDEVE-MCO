@@ -6,13 +6,16 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
-import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -21,12 +24,9 @@ import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ScanBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ScanSkuBinding
-import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 
 class ScanSKUActivity : ComponentActivity() {
     private lateinit var binding: ScanSkuBinding
@@ -93,13 +93,13 @@ class ScanSKUActivity : ComponentActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, { imageProxy ->
+                    it.setAnalyzer(cameraExecutor) { imageProxy ->
                         if (!hasScanned) { // Only process if scanning is still active
                             processImageProxy(imageProxy)
                         } else {
                             imageProxy.close()
                         }
-                    })
+                    }
                 }
 
             try {
@@ -151,7 +151,7 @@ class ScanSKUActivity : ComponentActivity() {
                     .collection("items")
                     .whereEqualTo("itemSKU", rawValue)
                     .get()
-                    .addOnSuccessListener { querySnapshot ->
+                    .addOnSuccessListener {
                         val intent = Intent()
                         intent.putExtra("barcode", rawValue)
                         setResult(RESULT_OK, intent)
@@ -159,7 +159,11 @@ class ScanSKUActivity : ComponentActivity() {
                     }
                     .addOnFailureListener { e ->
                         // Handle error
-                        Toast.makeText(this, "Error fetching item: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Error fetching item: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
             } else {
                 Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()

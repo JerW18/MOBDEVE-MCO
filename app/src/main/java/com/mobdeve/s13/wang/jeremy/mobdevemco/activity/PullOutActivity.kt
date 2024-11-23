@@ -65,7 +65,8 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
                     if (items.isNotEmpty()) {
                         // Format the current date and time
                         val date = Date()
-                        val dateFormat = SimpleDateFormat("MM.dd.yyyy HH:mm:ss", Locale.getDefault())
+                        val dateFormat =
+                            SimpleDateFormat("MM.dd.yyyy HH:mm:ss", Locale.getDefault())
                         dateFormat.timeZone = TimeZone.getTimeZone("Asia/Manila")
                         val dateString = dateFormat.format(date)
 
@@ -114,10 +115,12 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
                                             .await()
 
                                         // Update local lists and shared preferences
-                                        val itemInList = itemList.find { it.itemID == item.item.itemID }
+                                        val itemInList =
+                                            itemList.find { it.itemID == item.item.itemID }
                                         itemInList?.stock = newStock
 
-                                        val itemWithQuantity = itemWithQuantityList.find { it.item.itemID == item.item.itemID }
+                                        val itemWithQuantity =
+                                            itemWithQuantityList.find { it.item.itemID == item.item.itemID }
                                         itemWithQuantity?.apply {
                                             item.item.stock = newStock
                                             quantity = 0
@@ -126,9 +129,15 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
                                         val key = "qty_${item.item.itemID}"
                                         sharedPreferences.edit().putInt(key, 0).apply()
 
-                                        Log.d("FirestoreUpdate", "Item ${item.item.itemID} updated successfully.")
+                                        Log.d(
+                                            "FirestoreUpdate",
+                                            "Item ${item.item.itemID} updated successfully."
+                                        )
                                     } else {
-                                        Log.e("FirestoreUpdate", "No document found for itemId: ${item.item.itemID}")
+                                        Log.e(
+                                            "FirestoreUpdate",
+                                            "No document found for itemId: ${item.item.itemID}"
+                                        )
                                     }
                                 }
                             }
@@ -137,7 +146,11 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
                             tasks.awaitAll()
 
                             // Show success message
-                            Toast.makeText(this@PullOutActivity, "Items successfully pulled out.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@PullOutActivity,
+                                "Items successfully pulled out.",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
                             // Add log to local logs list
                             logsList.add(0, log)
@@ -146,20 +159,32 @@ class PullOutActivity : ComponentActivity(), PullOutAdapter.ItemSelectionListene
                             val resultIntent = Intent()
                             // return a list of item id changed
 
-                            resultIntent.putExtra("itemID", items.map { it.item.itemID }.toTypedArray())
+                            resultIntent.putExtra(
+                                "itemID",
+                                items.map { it.item.itemID }.toTypedArray()
+                            )
                             setResult(RESULT_OK, resultIntent)
                             finish()
 
                         } catch (e: Exception) {
                             // Handle errors
                             Log.e("FirestoreUpdate", "Error processing items: ${e.message}")
-                            Toast.makeText(this@PullOutActivity, "Error processing items: ${e.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@PullOutActivity,
+                                "Error processing items: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     } else {
-                        Toast.makeText(this@PullOutActivity, "No items with quantity greater than 0.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@PullOutActivity,
+                            "No items with quantity greater than 0.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
-                    Toast.makeText(this@PullOutActivity, "User not logged in.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@PullOutActivity, "User not logged in.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

@@ -49,6 +49,7 @@ class LoginActivity : ComponentActivity() {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
         }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = LoginBinding.inflate(layoutInflater)

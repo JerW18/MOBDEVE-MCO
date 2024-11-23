@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.TransactionItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemLog
 
-class CartAdapter(private val products: List<ItemLog>) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
+class CartAdapter(private val products: List<ItemLog>) :
+    RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
-    class ViewHolder(private val binding: TransactionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: TransactionItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: ItemLog) {
             binding.tvTransItem.text = item.item.name
             binding.tvTransQty.text = "${item.quantity}"

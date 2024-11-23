@@ -10,7 +10,6 @@ class Item() {  // Explicit no-argument constructor
     var restock: Int = 0
     // You can create a secondary constructor for easier initialization if needed
     constructor(itemSKU: String, imageUri: String?, name: String, price: Double, stock: Int, restock: Int) : this() {
-        this.itemID = itemID
         this.itemSKU = itemSKU
         this.imageUri = imageUri
         this.name = name

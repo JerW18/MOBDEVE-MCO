@@ -28,12 +28,14 @@ class LogsAdapter(private val logs: List<Logs>) : RecyclerView.Adapter<LogsAdapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindData(logs[position])
         holder.itemView.setOnClickListener {
-            val dialogBinding = CartDetailsBinding.inflate(LayoutInflater.from(holder.itemView.context))
+            val dialogBinding =
+                CartDetailsBinding.inflate(LayoutInflater.from(holder.itemView.context))
 
             // Create the dialog
             val dialog = Dialog(holder.itemView.context)
             dialog.setContentView(dialogBinding.root)
-            dialogBinding.rvTransactionDetails.layoutManager = LinearLayoutManager(holder.itemView.context)
+            dialogBinding.rvTransactionDetails.layoutManager =
+                LinearLayoutManager(holder.itemView.context)
 
             dialogBinding.rvTransactionDetails.adapter = CartAdapter(logs[position].items)
 

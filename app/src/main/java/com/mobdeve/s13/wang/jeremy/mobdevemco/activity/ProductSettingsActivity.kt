@@ -42,7 +42,7 @@ class ProductSettingsActivity : ComponentActivity() {
     private lateinit var binding: ProductSettingBinding
     private val numList = mutableListOf<Int>()
     private var state = "ADD"
-    private var base64: String = "";
+    private var base64: String = ""
     private var filteredList = itemList.toMutableList()
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private val galleryResultLauncher =
@@ -406,7 +406,7 @@ class ProductSettingsActivity : ComponentActivity() {
             item.itemID = itemsRef.document().id
 
             itemsRef.add(item)
-                .addOnSuccessListener { documentReference ->
+                .addOnSuccessListener {
                     itemList.add(item)
                     itemWithQuantityList.add(ItemWithQuantity(item, 0))
 

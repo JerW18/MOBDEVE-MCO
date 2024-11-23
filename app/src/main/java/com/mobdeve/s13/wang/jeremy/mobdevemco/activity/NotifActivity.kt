@@ -21,7 +21,7 @@ class NotifActivity : ComponentActivity() {
         setContentView(binding.root)
     }
 
-    private fun initData(){
+    private fun initData() {
         notifList = itemList.filter { it.stock <= it.restock }.toMutableList()
     }
 

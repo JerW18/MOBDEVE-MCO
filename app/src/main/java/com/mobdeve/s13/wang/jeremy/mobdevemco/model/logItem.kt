@@ -1,4 +1,5 @@
 package com.mobdeve.s13.wang.jeremy.mobdevemco.model
+
 // Data class for ItemDetails
 data class ItemDetails(
     val itemID: String = "",

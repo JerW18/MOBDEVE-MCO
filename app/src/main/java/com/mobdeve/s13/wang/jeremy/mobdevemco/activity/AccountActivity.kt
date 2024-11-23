@@ -114,9 +114,16 @@ class AccountActivity : ComponentActivity() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Log.d("Deletion", "Account and data deleted successfully")
-                                Toast.makeText(this, "Account and data deleted successfully", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this,
+                                    "Account and data deleted successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             } else {
-                                Log.e("Deletion", "Failed to delete account: ${task.exception?.message}")
+                                Log.e(
+                                    "Deletion",
+                                    "Failed to delete account: ${task.exception?.message}"
+                                )
                                 Toast.makeText(
                                     this,
                                     "Failed to delete account: ${task.exception?.message}",
@@ -127,7 +134,11 @@ class AccountActivity : ComponentActivity() {
                         }
                 } else {
                     Log.e("Deletion", "Failed to delete user data from Firestore")
-                    Toast.makeText(this, "Failed to delete user data from Firestore", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Failed to delete user data from Firestore",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         } else {
@@ -164,7 +175,10 @@ class AccountActivity : ComponentActivity() {
                                 onComplete(true)  // Firestore deletion succeeded
                             }
                             .addOnFailureListener { e ->
-                                Log.e("DeleteFirestore", "Failed to delete user document: ${e.message}")
+                                Log.e(
+                                    "DeleteFirestore",
+                                    "Failed to delete user document: ${e.message}"
+                                )
                                 onComplete(false)  // Firestore deletion failed
                             }
                     }
@@ -178,7 +192,6 @@ class AccountActivity : ComponentActivity() {
                 onComplete(false)  // Failed to retrieve items
             }
     }
-
 
 
 }

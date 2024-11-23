@@ -18,7 +18,8 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
-class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<EditAdapter.ViewHolder>() {
+class EditAdapter(private val items: MutableList<Item>) :
+    RecyclerView.Adapter<EditAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: EditItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Item, adapter: EditAdapter, items: MutableList<Item>) {
@@ -45,8 +46,14 @@ class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<E
 
         }
 
-        private fun showDeleteConfirmationDialog(item: Item, items: MutableList<Item>, adapter: EditAdapter, binding: EditItemBinding) {
-            val dialogBinding = ProductDeletionConfirmationBinding.inflate(LayoutInflater.from(binding.root.context))
+        private fun showDeleteConfirmationDialog(
+            item: Item,
+            items: MutableList<Item>,
+            adapter: EditAdapter,
+            binding: EditItemBinding
+        ) {
+            val dialogBinding =
+                ProductDeletionConfirmationBinding.inflate(LayoutInflater.from(binding.root.context))
 
             val dialog = Dialog(binding.root.context)
             dialog.setContentView(dialogBinding.root)
@@ -62,7 +69,8 @@ class EditAdapter(private val items: MutableList<Item>) : RecyclerView.Adapter<E
                 itemList.remove(item)
                 items.remove(item)
                 itemWithQuantityList.remove(itemWithQuantityList.find { it.item.itemSKU == item.itemSKU })
-                binding.root.context.getSharedPreferences("item_preferences", Context.MODE_PRIVATE).edit().remove("qty_${item.itemSKU}").apply()
+                binding.root.context.getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
+                    .edit().remove("qty_${item.itemSKU}").apply()
                 adapter.notifyDataSetChanged()
                 deleteItem(item)
             }

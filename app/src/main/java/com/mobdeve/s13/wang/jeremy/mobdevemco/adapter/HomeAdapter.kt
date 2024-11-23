@@ -3,17 +3,15 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.adapter
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.HomeBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.HomeItemBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
-import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
+import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 
-class HomeAdapter(private val items: MutableList<Item>, private val context: Context, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(private val items: MutableList<Item>, context: Context, private val itemSelectionListener: ItemSelectionListener) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
 

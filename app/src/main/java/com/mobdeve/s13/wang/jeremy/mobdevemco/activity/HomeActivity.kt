@@ -38,43 +38,44 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     private lateinit var sharedPreferences: SharedPreferences
     private var filteredList = mutableListOf<Item>()
 
-    private val pullOutActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            val notifList = mutableListOf<String>()
-            var check = it.data?.getStringArrayExtra("itemID")
-            if (check != null) {
-                for (item in itemList) {
-                    if (check.contains(item.itemID)) {
-                        if (item.stock <= item.restock){
-                            notifList.add(item.name)
+    private val pullOutActivityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { it ->
+            if (it.resultCode == RESULT_OK) {
+                val notifList = mutableListOf<String>()
+                val check = it.data?.getStringArrayExtra("itemID")
+                if (check != null) {
+                    for (item in itemList) {
+                        if (check.contains(item.itemID)) {
+                            if (item.stock <= item.restock) {
+                                notifList.add(item.name)
+                            }
                         }
                     }
-                }
-                shownotif(notifList)
+                    shownotif(notifList)
 
-            }
-            CoroutineScope(Dispatchers.Main).launch {
-                searchProduct()
-                binding.recyclerHome.adapter?.notifyDataSetChanged()
-                binding.tvNumItemSelected.text =
-                    "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
-                binding.tvTotalSum.text =
-                    "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
+                }
+                CoroutineScope(Dispatchers.Main).launch {
+                    searchProduct()
+                    binding.recyclerHome.adapter?.notifyDataSetChanged()
+                    binding.tvNumItemSelected.text =
+                        "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
+                    binding.tvTotalSum.text =
+                        "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
+                }
             }
         }
-    }
 
-    fun shownotif(notifList: MutableList<String>){
+    private fun shownotif(notifList: MutableList<String>) {
         var notifString = "Stocks for "
         var first = true
-        for (item in notifList){
-            if (first){
+        for (item in notifList) {
+            if (first) {
                 notifString += item
                 first = false
             } else if (notifList.indexOf(item) == notifList.size - 1)
-                notifString += " and " + item
+                notifString += " and $item"
             else
-                notifString += ", " + item
+                notifString += ", $item"
         }
         notifString += " are running low!"
         binding.notifBar.translationY = -200f
@@ -111,8 +112,10 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
             filteredList = itemList.toMutableList()
             filteredList = filteredList.filter { it.stock > 0 }.toMutableList()
             initUI()
-            binding.tvNumItemSelected.text = "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
-            binding.tvTotalSum.text = "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
+            binding.tvNumItemSelected.text =
+                "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
+            binding.tvTotalSum.text =
+                "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
         }
     }
 

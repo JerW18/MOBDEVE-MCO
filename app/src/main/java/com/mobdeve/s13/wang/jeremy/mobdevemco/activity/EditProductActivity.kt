@@ -22,15 +22,15 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.u
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
-class EditProductActivity: ComponentActivity() {
+class EditProductActivity : ComponentActivity() {
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var binding: EditProductBinding
-    private lateinit var base64: String;
-    private lateinit var itemSKU: String;
-    private lateinit var name: String;
-    private lateinit var price: String;
-    private lateinit var stock: String;
-    private lateinit var restock: String;
+    private lateinit var base64: String
+    private lateinit var itemSKU: String
+    private lateinit var name: String
+    private lateinit var price: String
+    private lateinit var stock: String
+    private lateinit var restock: String
     private val galleryResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -62,7 +62,7 @@ class EditProductActivity: ComponentActivity() {
         initUI()
     }
 
-    private fun initUI(){
+    private fun initUI() {
         itemSKU = intent.getStringExtra("itemSKU").toString()
         name = intent.getStringExtra("name").toString()
         price = intent.getStringExtra("price").toString()

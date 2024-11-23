@@ -5,9 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.TextWatcher
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -31,7 +28,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
-import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
 
 class ScanActivity : ComponentActivity() {
@@ -74,7 +70,8 @@ class ScanActivity : ComponentActivity() {
                         if (!querySnapshot.isEmpty) {
                             val item = querySnapshot.documents[0].toObject(Item::class.java)
                             if (item != null) {
-                                val newStock = item.stock + binding.etScanQty.text.toString().toInt()
+                                val newStock =
+                                    item.stock + binding.etScanQty.text.toString().toInt()
                                 firestore.collection("users")
                                     .document(userUid)
                                     .collection("items")
@@ -93,20 +90,30 @@ class ScanActivity : ComponentActivity() {
                                                 item.item.stock = newStock
                                             }
                                         }
-                                        Toast.makeText(this, "Stock updated.", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, "Stock updated.", Toast.LENGTH_SHORT)
+                                            .show()
                                     }
                                     .addOnFailureListener { e ->
-                                        Toast.makeText(this, "Error updating stock: ${e.message}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this,
+                                            "Error updating stock: ${e.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                             } else {
-                                Toast.makeText(this, "Item format error.", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Item format error.", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         } else {
                             Toast.makeText(this, "Item not found.", Toast.LENGTH_SHORT).show()
                         }
                     }
                     .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error fetching item: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Error fetching item: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
             } else {
                 Toast.makeText(this, "User not logged in.", Toast.LENGTH_SHORT).show()
@@ -202,13 +209,13 @@ class ScanActivity : ComponentActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_BLOCK_PRODUCER)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, { imageProxy ->
+                    it.setAnalyzer(cameraExecutor) { imageProxy ->
                         if (!hasScanned) {
                             processImageProxy(imageProxy)
                         } else {
                             imageProxy.close()
                         }
-                    })
+                    }
                 }
 
             try {
