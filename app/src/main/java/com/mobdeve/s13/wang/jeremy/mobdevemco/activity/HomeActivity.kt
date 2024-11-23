@@ -15,12 +15,14 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.HomeAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.HomeBinding
+import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.NetworkChecker
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +34,8 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.list.logsList.Companion.logsList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Logs
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.OnSwipeTouchListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     private lateinit var binding: HomeBinding
@@ -117,6 +121,32 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
             binding.tvTotalSum.text =
                 "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
         }
+        // create thread that constantly checks if there is wifi
+        lifecycleScope.launch(Dispatchers.IO) {
+            var isRunning = true
+            while (isRunning) {
+                val wifiChecker = NetworkChecker().isConnectedToInternet(this@HomeActivity)
+                Log.d(ContentValues.TAG, "Wifi Checker: $wifiChecker")
+                if (!wifiChecker) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@HomeActivity,
+                            "Can't connect to the database",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // sign out user
+                        FirebaseAuth.getInstance().signOut()
+                        val intent = Intent(this@HomeActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                    Log.d(ContentValues.TAG, "Setting isRunning to false")
+                    isRunning = false
+                }
+                delay(5000)
+            }
+        }
+
+
     }
 
     override fun onItemSelectionChanged(selectedItemCount: Int, totalPrice: Double) {

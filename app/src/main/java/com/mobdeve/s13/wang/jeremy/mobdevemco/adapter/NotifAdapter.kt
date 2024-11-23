@@ -11,7 +11,7 @@ class NotifAdapter(private val items: List<Item>) : RecyclerView.Adapter<NotifAd
     class ViewHolder(private val binding: NotifItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindData(item: Item) {
-            binding.notifText.text = "${item.name} currently has ${item.stock} items left, and the restock point is ${item.restock} items."
+            binding.notifText.text = "${item.name} currently has ${item.stock} items left, and the restock threshhold is ${item.restock} items."
         }
     }
 
