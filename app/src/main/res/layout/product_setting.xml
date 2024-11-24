@@ -17,7 +17,8 @@
             android:layout_height="25sp"
             android:background="@drawable/transparent_logo"
             android:src="@drawable/baseline_filter_alt_24"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
 
         <View
             android:id="@+id/viewPSGreenHeader"
@@ -166,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Product Name *"
+                    android:text="Product Name"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -190,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Quantity *"
+                    android:text="Quantity"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -201,7 +202,7 @@
                     android:layout_height="56sp"
                     android:background="@drawable/input_field"
                     android:fontFamily="@font/inter_medium"
-                    android:hint="Quantity"
+                    android:hint="Quantitiy"
                     android:inputType="text"
                     android:padding="12sp"
                     android:textColor="@color/gray"
@@ -214,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Notify When Stock Reaches *"
+                    android:text="Restock Quantity"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -225,7 +226,7 @@
                     android:layout_height="56sp"
                     android:background="@drawable/input_field"
                     android:fontFamily="@font/inter_medium"
-                    android:hint="Quantity"
+                    android:hint="Restock Quantity"
                     android:inputType="text"
                     android:padding="12sp"
                     android:textColor="@color/gray"
@@ -238,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Product Price *"
+                    android:text="Price"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
