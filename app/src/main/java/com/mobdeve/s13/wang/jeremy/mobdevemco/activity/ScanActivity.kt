@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -35,6 +36,7 @@ class ScanActivity : ComponentActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var barcodeScanner: BarcodeScanner
+    private lateinit var currentItem : Item
     private var rawValue: String = ""
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -53,7 +55,7 @@ class ScanActivity : ComponentActivity() {
     }
 
     private fun initUI() {
-        binding.btnScanPullOut.isAllCaps = false
+        binding.btnAddToCart.isAllCaps = false
         binding.btnRestock.isAllCaps = false
 
         binding.btnRestock.setOnClickListener {
@@ -121,25 +123,16 @@ class ScanActivity : ComponentActivity() {
 
         }
 
-        binding.btnScanPullOut.setOnClickListener {
+        binding.btnAddToCart.setOnClickListener {
             val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
 
             if (item != null) {
-                val newQty = binding.etScanQty.text.toString().toInt() + item.quantity
+                val newQty = binding.etScanQty.text.toString().toInt()
+                val itemIndex = itemWithQuantityList.indexOf(item)
 
-                if (newQty > item.item.stock) {
-                    Toast.makeText(this, "Quantity exceeds stock.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                if (newQty >= 0) {
-                    item.quantity = newQty
-                    val key = "qty_${item.item.itemID}"
-                    sharedPreferences.edit().putInt(key, newQty).apply()
-                    Toast.makeText(this, "Quantity updated.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Invalid quantity.", Toast.LENGTH_SHORT).show()
-                }
+                itemWithQuantityList[itemIndex].quantity = newQty
+                val key = "qty_${itemWithQuantityList[itemIndex].item.itemID}"
+                sharedPreferences.edit().putInt(key, itemWithQuantityList[itemIndex].quantity).apply()
             } else {
                 Toast.makeText(this, "Item not found.", Toast.LENGTH_SHORT).show()
             }
@@ -167,6 +160,31 @@ class ScanActivity : ComponentActivity() {
             }
             startActivity(intent)
         }
+
+        binding.etScanQty.addTextChangedListener(object : TextWatcher{
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun afterTextChanged(s: android.text.Editable?) {
+                if (binding.etScanQty.text.toString().isEmpty()) {
+                    return
+                }
+                val newQty = binding.etScanQty.text.toString().toInt()
+
+                if (newQty < 0) {
+                    binding.etScanQty.setText("0")
+                }
+                if (newQty > currentItem.stock) {
+                    binding.etScanQty.setText(currentItem.stock.toString())
+                }
+                val key = "qty_${currentItem.itemID}"
+                sharedPreferences.edit().putInt(key, newQty).apply()
+                itemWithQuantityList.find{ it.item.itemID == currentItem.itemID }?.quantity = newQty
+
+
+            }
+        })
     }
 
     private fun initCamera() {
@@ -276,7 +294,7 @@ class ScanActivity : ComponentActivity() {
                         binding.tvScanAddNew
                     )
                 )
-
+                currentItem = item.item
                 binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))
                 binding.tvScanProduct.text = item.item.name
                 binding.tvScanPrice.text = item.item.price.toString()

@@ -152,7 +152,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <Button
-        android:id="@+id/btnScanPullOut"
+        android:id="@+id/btnAddToCart"
         android:layout_width="140sp"
         android:layout_height="60sp"
         android:background="@drawable/active_button"
