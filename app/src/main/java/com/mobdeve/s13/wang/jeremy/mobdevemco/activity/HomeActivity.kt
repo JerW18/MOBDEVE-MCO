@@ -55,8 +55,9 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
                             }
                         }
                     }
-                    shownotif(notifList)
-
+                    if (notifList.isNotEmpty()) {
+                        shownotif(notifList)
+                    }
                 }
                 CoroutineScope(Dispatchers.Main).launch {
                     searchProduct()

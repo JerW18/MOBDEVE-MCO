@@ -4,9 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.media.Image
 import android.os.Bundle
 import android.text.TextWatcher
 import android.util.Log
@@ -33,7 +30,6 @@ import java.util.concurrent.Executors
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
-import java.io.ByteArrayOutputStream
 
 class ScanActivity : ComponentActivity() {
     private lateinit var binding: ScanBinding
@@ -302,8 +298,6 @@ class ScanActivity : ComponentActivity() {
                 }
             } else {
                 runOnUiThread {
-                    Toast.makeText(this, "Item not found in the list.", Toast.LENGTH_SHORT).show()
-
                     toggleVisibility(
                         listOf(
                             binding.btnScanAddNew,

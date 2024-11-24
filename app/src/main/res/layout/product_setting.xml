@@ -11,15 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/btnLogsFilter"
-            android:layout_width="25sp"
-            android:layout_height="25sp"
-            android:background="@drawable/transparent_logo"
-            android:src="@drawable/baseline_filter_alt_24"
-            android:visibility="gone"
-            tools:ignore="MissingConstraints" />
-
         <View
             android:id="@+id/viewPSGreenHeader"
             android:layout_width="match_parent"
@@ -202,7 +193,7 @@
                     android:layout_height="56sp"
                     android:background="@drawable/input_field"
                     android:fontFamily="@font/inter_medium"
-                    android:hint="Quantitiy"
+                    android:hint="Quantity"
                     android:inputType="text"
                     android:padding="12sp"
                     android:textColor="@color/gray"

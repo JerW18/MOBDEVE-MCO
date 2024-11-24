@@ -2,7 +2,6 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +12,6 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mobdeve.s13.wang.jeremy.mobdevemco.R
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.EditAdapter
 import com.mobdeve.s13.wang.jeremy.mobdevemco.adapter.LogsAdapter
-import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.LogsFilterModalBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.databinding.ProductSettingBinding
 import com.mobdeve.s13.wang.jeremy.mobdevemco.model.Item
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.convertBitmapToBase64
@@ -218,8 +215,7 @@ class ProductSettingsActivity : ComponentActivity() {
                                 binding.recyclerLogs,
                                 binding.tvPSDateAndTime,
                                 binding.tvPSInOut,
-                                binding.tvPSQty,
-                                binding.btnLogsFilter
+                                binding.tvPSQty
                             )
                         )
                     }
@@ -273,8 +269,7 @@ class ProductSettingsActivity : ComponentActivity() {
                                 binding.recyclerLogs,
                                 binding.tvPSDateAndTime,
                                 binding.tvPSInOut,
-                                binding.tvPSQty,
-                                binding.btnLogsFilter
+                                binding.tvPSQty
                             )
                         )
                     }
@@ -290,8 +285,7 @@ class ProductSettingsActivity : ComponentActivity() {
                         binding.recyclerLogs,
                         binding.tvPSDateAndTime,
                         binding.tvPSInOut,
-                        binding.tvPSQty,
-                        binding.btnLogsFilter
+                        binding.tvPSQty
                     ),
                     emptyList()
                 )
@@ -338,10 +332,6 @@ class ProductSettingsActivity : ComponentActivity() {
             showImagePickerDialog()
         }
 
-        binding.btnLogsFilter.setOnClickListener {
-            showLogsFilterDialog()
-        }
-
         binding.etSearchEdit.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
@@ -362,27 +352,6 @@ class ProductSettingsActivity : ComponentActivity() {
             }
         )
         binding.recyclerEdit.adapter!!.notifyDataSetChanged()
-    }
-
-    private fun showLogsFilterDialog() {
-        // Inflate the logout confirmation layout
-        val dialogBinding = LogsFilterModalBinding.inflate(LayoutInflater.from(this))
-
-        // Create the dialog
-        val dialog = Dialog(this)
-        dialog.setContentView(dialogBinding.root)
-        dialogBinding.rvProductList.layoutManager = LinearLayoutManager(this)
-
-        // Set transparent background for the dialog
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        // Cancel button logic
-        dialogBinding.btnFilterLogs.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        // Show the dialog
-        dialog.show()
     }
 
     private fun saveItemToDatabase(item: Item) {
