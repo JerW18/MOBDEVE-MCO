@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.Image
 import android.os.Bundle
 import android.text.TextWatcher
 import android.util.Log
@@ -30,6 +33,7 @@ import java.util.concurrent.Executors
 import com.mobdeve.s13.wang.jeremy.mobdevemco.helper.Base64Converter.Companion.decodeBase64ToBitmap
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemList.Companion.itemList
 import com.mobdeve.s13.wang.jeremy.mobdevemco.list.itemWithQuantityList.Companion.itemWithQuantityList
+import java.io.ByteArrayOutputStream
 
 class ScanActivity : ComponentActivity() {
     private lateinit var binding: ScanBinding
@@ -127,8 +131,14 @@ class ScanActivity : ComponentActivity() {
             val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
 
             if (item != null) {
-                val newQty = binding.etScanQty.text.toString().toInt()
+                var newQty = binding.etScanQty.text.toString().toInt()
                 val itemIndex = itemWithQuantityList.indexOf(item)
+                newQty += itemWithQuantityList[itemIndex].quantity
+
+                if (newQty > item.item.stock) {
+                    Toast.makeText(this, "${item.item.stock - itemWithQuantityList[itemIndex].quantity} Stock Remaning", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
 
                 itemWithQuantityList[itemIndex].quantity = newQty
                 val key = "qty_${itemWithQuantityList[itemIndex].item.itemID}"
@@ -175,14 +185,6 @@ class ScanActivity : ComponentActivity() {
                 if (newQty < 0) {
                     binding.etScanQty.setText("0")
                 }
-                if (newQty > currentItem.stock) {
-                    binding.etScanQty.setText(currentItem.stock.toString())
-                }
-                val key = "qty_${currentItem.itemID}"
-                sharedPreferences.edit().putInt(key, newQty).apply()
-                itemWithQuantityList.find{ it.item.itemID == currentItem.itemID }?.quantity = newQty
-
-
             }
         })
     }
@@ -228,18 +230,13 @@ class ScanActivity : ComponentActivity() {
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor) { imageProxy ->
-                        if (!hasScanned) {
-                            processImageProxy(imageProxy)
-                        } else {
-                            imageProxy.close()
-                        }
+                        processImageProxy(imageProxy)
                     }
                 }
 
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
-
             } catch (exc: Exception) {
                 Log.e("ScanActivity", "Use case binding failed", exc)
             }
@@ -271,59 +268,75 @@ class ScanActivity : ComponentActivity() {
     }
 
     private fun processBarcode(barcode: Barcode) {
-        rawValue = barcode.rawValue
+        val scannedValue = barcode.rawValue
 
-        if (rawValue != null) {
+        if (!scannedValue.isNullOrEmpty()) {
+            rawValue = scannedValue
             val item = itemWithQuantityList.find { it.item.itemSKU == rawValue }
 
             if (item != null) {
-                toggleVisibility(
-                    listOf(
-                        binding.ivScanImage,
-                        binding.tvScanProduct,
-                        binding.etScanQty,
-                        binding.ivScanAdd,
-                        binding.ivScanMinus,
-                        binding.tvScanPrice,
-                        binding.tvScanStock,
-                        binding.tvScanStockLabel,
-                        binding.tvScanPesoLabel
-                    ),
-                    listOf(
-                        binding.btnScanAddNew,
-                        binding.tvScanAddNew
+                // Update UI for the scanned item
+                runOnUiThread {
+                    toggleVisibility(
+                        listOf(
+                            binding.ivScanImage,
+                            binding.tvScanProduct,
+                            binding.etScanQty,
+                            binding.ivScanAdd,
+                            binding.ivScanMinus,
+                            binding.tvScanPrice,
+                            binding.tvScanStock,
+                            binding.tvScanStockLabel,
+                            binding.tvScanPesoLabel
+                        ),
+                        listOf(
+                            binding.btnScanAddNew,
+                            binding.tvScanAddNew
+                        )
                     )
-                )
-                currentItem = item.item
-                binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))
-                binding.tvScanProduct.text = item.item.name
-                binding.tvScanPrice.text = item.item.price.toString()
-                binding.tvScanStock.text = item.item.stock.toString()
-
+                    currentItem = item.item
+                    binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))
+                    binding.tvScanProduct.text = item.item.name
+                    binding.tvScanPrice.text = item.item.price.toString()
+                    binding.tvScanStock.text = item.item.stock.toString()
+                }
             } else {
-                Toast.makeText(this, "Item not found in the list.", Toast.LENGTH_SHORT).show()
+                runOnUiThread {
+                    Toast.makeText(this, "Item not found in the list.", Toast.LENGTH_SHORT).show()
 
-                toggleVisibility(
-                    listOf(
-                        binding.btnScanAddNew,
-                        binding.tvScanAddNew
-                    ),
-                    listOf(
-                        binding.ivScanImage,
-                        binding.tvScanProduct,
-                        binding.etScanQty,
-                        binding.ivScanAdd,
-                        binding.ivScanMinus,
-                        binding.tvScanPrice,
-                        binding.tvScanStock,
-                        binding.tvScanStockLabel,
-                        binding.tvScanPesoLabel
+                    toggleVisibility(
+                        listOf(
+                            binding.btnScanAddNew,
+                            binding.tvScanAddNew
+                        ),
+                        listOf(
+                            binding.ivScanImage,
+                            binding.tvScanProduct,
+                            binding.etScanQty,
+                            binding.ivScanAdd,
+                            binding.ivScanMinus,
+                            binding.tvScanPrice,
+                            binding.tvScanStock,
+                            binding.tvScanStockLabel,
+                            binding.tvScanPesoLabel
+                        )
                     )
-                )
+                }
             }
+
+            // Add a short delay before enabling the scanner for the next barcode
+            resetScannerAfterDelay(750) // Adjust the delay time as needed
         } else {
-            Toast.makeText(this, "Invalid barcode scanned.", Toast.LENGTH_SHORT).show()
+            runOnUiThread {
+                Toast.makeText(this, "Invalid barcode scanned.", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    private fun resetScannerAfterDelay(delayMillis: Long) {
+        binding.previewView.postDelayed({
+            hasScanned = false
+        }, delayMillis)
     }
 
     private fun toggleVisibility(visibleViews: List<View>, goneViews: List<View>) {

@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Product Name"
+                    android:text="Product Name *"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Quantity"
+                    android:text="Quantity *"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -201,7 +201,7 @@
                     android:layout_height="56sp"
                     android:background="@drawable/input_field"
                     android:fontFamily="@font/inter_medium"
-                    android:hint="Quantitiy"
+                    android:hint="Quantity"
                     android:inputType="text"
                     android:padding="12sp"
                     android:textColor="@color/gray"
@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Restock Quantity"
+                    android:text="Notify When Stock Reaches *"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
@@ -225,7 +225,7 @@
                     android:layout_height="56sp"
                     android:background="@drawable/input_field"
                     android:fontFamily="@font/inter_medium"
-                    android:hint="Restock Quantity"
+                    android:hint="Quantity"
                     android:inputType="text"
                     android:padding="12sp"
                     android:textColor="@color/gray"
@@ -238,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Price"
+                    android:text="Product Price *"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:visibility="visible" />
