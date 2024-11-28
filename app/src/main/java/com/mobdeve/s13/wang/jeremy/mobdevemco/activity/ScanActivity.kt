@@ -293,7 +293,7 @@ class ScanActivity : ComponentActivity() {
                     currentItem = item.item
                     binding.ivScanImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))
                     binding.tvScanProduct.text = item.item.name
-                    binding.tvScanPrice.text = item.item.price.toString()
+                    binding.tvScanPrice.text = "%.2f".format(item.item.price)
                     binding.tvScanStock.text = item.item.stock.toString()
                 }
             } else {
