@@ -34,7 +34,7 @@
         android:id="@+id/tvLogItemQty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="36dp"
         android:fontFamily="@font/inter"
         android:text="8000"
         android:textColor="@color/black"
