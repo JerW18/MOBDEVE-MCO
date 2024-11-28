@@ -113,17 +113,6 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         binding = HomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        CoroutineScope(Dispatchers.Main).launch {
-            getLogs()
-            getItem()
-            filteredList = itemList.toMutableList()
-            initUI()
-            binding.tvNumItemSelected.text =
-                "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
-            binding.tvTotalSum.text =
-                "₱ %.2f".format(itemWithQuantityList.sumOf { it.item.price * it.quantity })
-        }
         // create thread that constantly checks if there is wifi
         lifecycleScope.launch(Dispatchers.IO) {
             var isRunning = true
@@ -159,6 +148,18 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
     override fun onResume() {
         super.onResume()
         searchProduct()
+        sharedPreferences = getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            getLogs()
+            getItem()
+            filteredList = itemList.toMutableList()
+            initUI()
+            binding.tvNumItemSelected.text =
+                "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
+            binding.tvTotalSum.text =
+                "₱ %.2f".format(itemWithQuantityList.sumOf { it.item.price * it.quantity })
+        }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {

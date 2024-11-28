@@ -3,6 +3,7 @@ package com.mobdeve.s13.wang.jeremy.mobdevemco.activity
 import android.Manifest
 import android.app.AlertDialog
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -377,6 +378,9 @@ class ProductSettingsActivity : ComponentActivity() {
                 .addOnSuccessListener {
                     itemList.add(item)
                     itemWithQuantityList.add(ItemWithQuantity(item, 0))
+                    val key = "qty_${item.itemID}"
+                    var sharedPreferences = getSharedPreferences("item_preferences", MODE_PRIVATE)
+                    sharedPreferences.edit().putInt(key, 0).apply()
 
                     // Clear the input fields
                     binding.etPSProductSKU.text.clear()
