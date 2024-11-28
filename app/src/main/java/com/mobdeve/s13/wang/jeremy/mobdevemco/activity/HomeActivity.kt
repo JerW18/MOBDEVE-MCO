@@ -111,11 +111,12 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         sharedPreferences = getSharedPreferences("item_preferences", Context.MODE_PRIVATE)
         binding = HomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
         CoroutineScope(Dispatchers.Main).launch {
             getLogs()
             getItem()
             filteredList = itemList.toMutableList()
-            filteredList = filteredList.filter { it.stock > 0 }.toMutableList()
             initUI()
             binding.tvNumItemSelected.text =
                 "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
@@ -298,6 +299,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -316,7 +318,6 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
         filteredList.addAll(
             itemList.filter {
                 it.name.lowercase().contains(searchQuery)
-                it.stock > 0
             }
         )
         binding.recyclerHome.adapter?.notifyDataSetChanged()

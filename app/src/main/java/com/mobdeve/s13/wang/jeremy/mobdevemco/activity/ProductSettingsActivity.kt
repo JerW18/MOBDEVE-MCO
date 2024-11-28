@@ -37,7 +37,6 @@ import com.mobdeve.s13.wang.jeremy.mobdevemco.model.ItemWithQuantity
 
 class ProductSettingsActivity : ComponentActivity() {
     private lateinit var binding: ProductSettingBinding
-    private val numList = mutableListOf<Int>()
     private var state = "ADD"
     private var base64: String = ""
     private var filteredList = itemList.toMutableList()
@@ -79,7 +78,6 @@ class ProductSettingsActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         binding.recyclerEdit.adapter?.notifyDataSetChanged()
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,9 +114,6 @@ class ProductSettingsActivity : ComponentActivity() {
             }
 
         super.onCreate(savedInstanceState)
-        for (i in 0 until 11) {
-            numList.add(1)
-        }
         binding = ProductSettingBinding.inflate(layoutInflater)
 
         val itemSKU = intent.getStringExtra("itemSKU")
