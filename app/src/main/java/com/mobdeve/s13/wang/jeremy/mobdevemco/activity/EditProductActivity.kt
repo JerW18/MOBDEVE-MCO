@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,6 +84,13 @@ class EditProductActivity : ComponentActivity() {
             showImagePickerDialog()
         }
         binding.btnSaveProduct.setOnClickListener {
+            if (binding.etPSProductName.text.toString().isEmpty() || binding.etPSQty.text.toString()
+                    .isEmpty() || binding.etPSRestockQty.text.toString().isEmpty() || binding.etPSPrice.text.toString().isEmpty()
+            ) {
+                // Show toast
+                Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             itemList.find { it.itemSKU == itemSKU }?.let {
                 it.name = binding.etPSProductName.text.toString()
                 it.price = binding.etPSPrice.text.toString().toDouble()
