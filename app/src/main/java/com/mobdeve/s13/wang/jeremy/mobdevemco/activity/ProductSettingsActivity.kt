@@ -366,7 +366,7 @@ class ProductSettingsActivity : ComponentActivity() {
 
             // if sku already exists, throw error
             for (i in itemList) {
-                if (i.itemSKU == item.itemSKU) {
+                if (i.itemSKU == item.itemSKU && i.itemSKU != "") {
                     Toast.makeText(this, "Product SKU already exists", Toast.LENGTH_SHORT).show()
                     return
                 }
