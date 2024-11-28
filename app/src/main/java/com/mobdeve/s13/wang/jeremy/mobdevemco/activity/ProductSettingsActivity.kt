@@ -166,8 +166,12 @@ class ProductSettingsActivity : ComponentActivity() {
             val price = binding.etPSPrice.text.toString().toDoubleOrNull() ?: 0.0
             val restock = binding.etPSRestockQty.text.toString().toIntOrNull() ?: 0
             val item = Item(sku, base64, name, price, quantity, restock)
-
-            saveItemToDatabase(item)
+            if (name.isEmpty() || quantity == 0 || price == 0.0 || restock == 0) {
+                Toast.makeText(this, "Please fill in required fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                saveItemToDatabase(item)
+            }
         }
 
         binding.btnPSAdd.setOnClickListener {
