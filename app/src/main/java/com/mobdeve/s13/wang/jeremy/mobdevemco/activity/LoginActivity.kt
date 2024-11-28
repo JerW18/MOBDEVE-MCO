@@ -212,6 +212,12 @@ class LoginActivity : ComponentActivity() {
 
                         // Redirect to HomeActivity
                         navigateToHome()
+                    } else if (task.exception?.message?.startsWith("A network error") == true) {
+                        Toast.makeText(
+                            this,
+                            "Login failed: Please check your internet connection",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         Toast.makeText(
                             this,
@@ -250,7 +256,20 @@ class LoginActivity : ComponentActivity() {
 
                         // Redirect to HomeActivity
                         navigateToHome()
-                    } else {
+                    } else if(task.exception?.message?.startsWith("A network error") == true) {
+                        Toast.makeText(
+                            this,
+                            "Registration failed: Please check your internet connection",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else if (task.exception?.message?.startsWith("The given password") == true) {
+                        Toast.makeText(
+                            this,
+                            "Registration failed: The given password should have at least 6 characters",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else {
                         Toast.makeText(
                             this,
                             "Registration failed: ${task.exception?.message}",
