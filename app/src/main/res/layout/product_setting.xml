@@ -351,8 +351,8 @@
             android:layout_height="0sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/viewPSButtonBackground"
-            app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPSDateAndTime">
 
         </androidx.recyclerview.widget.RecyclerView>
