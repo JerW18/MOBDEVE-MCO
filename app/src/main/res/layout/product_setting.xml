@@ -310,7 +310,7 @@
             android:text="Date and Timestamp"
             android:textColor="@color/gray"
             android:textSize="12sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/tvPSInOut"
             app:layout_constraintStart_toStartOf="@+id/btnPSAdd"
             app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
@@ -325,7 +325,7 @@
             android:text="Type"
             android:textColor="@color/gray"
             android:textSize="12sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/tvPSDateAndTime"
             app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
 
@@ -338,7 +338,7 @@
             android:text="Total Amount"
             android:textColor="@color/gray"
             android:textSize="12sp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@+id/viewPSButtonBackground"
             app:layout_constraintTop_toBottomOf="@+id/viewPSButtonBackground" />
 
