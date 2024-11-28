@@ -15,7 +15,7 @@ class LogsAdapter(private val logs: List<Logs>) : RecyclerView.Adapter<LogsAdapt
         fun bindData(log: Logs) {
             binding.tvLogItemDateTime.text = log.date
             binding.tvLogItemInOut.text = log.type
-            binding.tvLogItemQty.text = "₱ ${log.total}"
+            binding.tvLogItemQty.text = "₱ %.2f".format(log.total)
         }
     }
 
