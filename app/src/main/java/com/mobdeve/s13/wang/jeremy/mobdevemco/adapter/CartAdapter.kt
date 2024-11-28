@@ -14,7 +14,7 @@ class CartAdapter(private val products: List<ItemLog>) :
         fun bindData(item: ItemLog) {
             binding.tvTransItem.text = item.item.name
             binding.tvTransQty.text = "${item.quantity}"
-            binding.tvTransPrice.text = "₱ ${item.item.price}"
+            binding.tvTransPrice.text = "₱ %.2f".format(item.item.price)
         }
     }
 
