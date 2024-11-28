@@ -65,7 +65,8 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
                     binding.tvNumItemSelected.text =
                         "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
                     binding.tvTotalSum.text =
-                        "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
+                        "₱ %.2f".format(itemWithQuantityList.sumOf { it.item.price * it.quantity })
+
                 }
             }
         }
@@ -121,7 +122,7 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
             binding.tvNumItemSelected.text =
                 "${itemWithQuantityList.filter { it.quantity > 0 }.size} items selected"
             binding.tvTotalSum.text =
-                "₱ ${itemWithQuantityList.sumOf { it.item.price * it.quantity }}"
+                "₱ %.2f".format(itemWithQuantityList.sumOf { it.item.price * it.quantity })
         }
         // create thread that constantly checks if there is wifi
         lifecycleScope.launch(Dispatchers.IO) {
@@ -153,9 +154,8 @@ class HomeActivity : ComponentActivity(), HomeAdapter.ItemSelectionListener {
 
     override fun onItemSelectionChanged(selectedItemCount: Int, totalPrice: Double) {
         binding.tvNumItemSelected.text = "$selectedItemCount items selected"
-        binding.tvTotalSum.text = "₱ $totalPrice"
-    }
-
+        binding.tvTotalSum.text = "₱ %.2f".format(totalPrice)
+}
     override fun onResume() {
         super.onResume()
         searchProduct()

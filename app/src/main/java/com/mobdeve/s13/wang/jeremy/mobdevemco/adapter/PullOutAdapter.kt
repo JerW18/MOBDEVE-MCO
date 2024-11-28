@@ -31,7 +31,7 @@ class PullOutAdapter(
             onQuantityChanged: (ItemWithQuantity) -> Unit
         ) {
             val key = "qty_${item.item.itemID}"
-            binding.tvPullOutPrice.text = item.item.price.toString()
+            binding.tvPullOutPrice.text = "%.2f".format(item.item.price)
             binding.tvPullOutStock.text = item.item.stock.toString()
             binding.ivPullOutImage.setImageBitmap(decodeBase64ToBitmap(item.item.imageUri))
             binding.tvPullOutProductName.text = item.item.name

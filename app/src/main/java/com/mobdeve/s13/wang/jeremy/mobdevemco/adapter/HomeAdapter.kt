@@ -24,7 +24,7 @@ class HomeAdapter(private val items: MutableList<Item>, context: Context, privat
             binding.etItemQty.setText(savedQty.toString())
 
             binding.tvItemProduct.text = item.name
-            binding.tvItemPrice.text = item.price.toString()
+            binding.tvItemPrice.text = "%.2f".format(item.price)
             binding.tvItemStock.text = item.stock.toString()
             binding.ivItemImage.setImageBitmap(decodeBase64ToBitmap(item.imageUri))
 
