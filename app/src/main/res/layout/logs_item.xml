@@ -9,6 +9,7 @@
         android:id="@+id/tvLogItemDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
         android:fontFamily="@font/inter_bold"
         android:text="11.10.2003 11:00pm"
         android:textColor="@color/black"
@@ -21,7 +22,7 @@
         android:id="@+id/tvLogItemInOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="60dp"
         android:fontFamily="@font/inter"
         android:text="Out"
         android:textColor="@color/black"
@@ -34,13 +35,15 @@
         android:id="@+id/tvLogItemQty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="28dp"
         android:fontFamily="@font/inter"
         android:text="8000"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvLogItemInOut"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
